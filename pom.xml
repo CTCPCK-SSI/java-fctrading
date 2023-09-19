@@ -6,11 +6,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>vn.com.ssi</groupId>
-    <artifactId>fctrading-client</artifactId>
+    <groupId>com.ssi</groupId>
+    <artifactId>fctrading</artifactId>
     <version>2.0.0</version>
 
-    <name>fctrading-client</name>
+    <name>com.ssi:fctrading</name>
     <description>FastConnect API java client</description>
 
     <licenses>
@@ -52,6 +52,19 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    </execution>
+                </executions>
+                </plugin>
         </plugins>
     </build>
 
@@ -119,14 +132,9 @@
             <version>2.13.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.java-websocket</groupId>
-            <artifactId>Java-WebSocket</artifactId>
-            <version>1.3.9</version>
+            <groupId>io.github.fDizzzy</groupId>
+            <artifactId>signalr-client</artifactId>
+            <version>1.2.1</version> 
         </dependency>
     </dependencies>
     
