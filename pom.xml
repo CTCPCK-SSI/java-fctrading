@@ -39,7 +39,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.license>lgpl3</netbeans.hint.license>
     </properties>
-
+    <distributionManagement>
+        <repository>
+            <id>local</id>
+            <url>file://./repo</url>
+        </repository>
+	</distributionManagement>
     <build>
         <plugins>
             <!--Order is important ! Execution follows the declaration order -->
