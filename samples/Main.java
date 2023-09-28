@@ -1,4 +1,3 @@
-package com.ssi.fctrading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
