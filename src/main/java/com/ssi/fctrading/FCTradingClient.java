@@ -135,7 +135,17 @@ public class FCTradingClient {
         return post(req, API.MODIFY_ORDER, ModifyOrderResponse.class);
     }
     public Response<CancelOrderResponse> CancelOrder(CancelOrderRequest req) throws Exception {
-        return post(req, API.NEW_ORDER, CancelOrderResponse.class);
+        return post(req, API.CANCEL_ORDER, CancelOrderResponse.class);
+    }
+
+    public Response<NewOrderResponse> DerNewOrder(NewOrderRequest req) throws Exception {
+        return post(req, API.NEW_ORDER, NewOrderResponse.class);
+    }
+    public Response<ModifyOrderResponse> DerModifyOrder(ModifyOrderRequest req) throws Exception {
+        return post(req, API.MODIFY_ORDER, ModifyOrderResponse.class);
+    }
+    public Response<CancelOrderResponse> DerCancelOrder(CancelOrderRequest req) throws Exception {
+        return post(req, API.CANCEL_ORDER, CancelOrderResponse.class);
     }
 
     public Response<DerivativeBalanceResponse> GetDerivativeBalance(AccountBalanceRequest req) throws Exception {
@@ -169,6 +179,75 @@ public class FCTradingClient {
 
     public Response<OrderHistoryResponse> GetOrderHistory(OrderHistoryRequest req) throws Exception {
         return get(req, API.GET_ORDER_HISTORY, OrderHistoryResponse.class);
+    }
+
+    public Response<OrderBookResponse> GetOrderBook(OrderBookRequest req) throws Exception {
+        return get(req, API.GET_ORDER_BOOK, OrderBookResponse.class);
+    }
+
+    public Response<AuditOrderBookResponse> GetAuditOrderBook(AuditOrderBookRequest req) throws Exception {
+        return get(req, API.GET_AUDIT_ORDER_BOOK, AuditOrderBookResponse.class);
+    }
+
+    public Response<CIAAmountResponse> GetCashInAdvanceAmount(CIAAmountRequest req) throws Exception {
+        return get(req, API.GET_CIA_AMOUNT, CIAAmountResponse.class);
+    }
+
+    public Response<UnsettledSoldTransactionResponse> GetUnsettleSoldTransaction(UnsettledSoldTransactionRequest req) throws Exception {
+        return get(req, API.GET_UNSETTLE_SOLD_TRANSACTION, UnsettledSoldTransactionResponse.class);
+    }
+
+    public Response<CashTransferHistoryResponse> GetCashTransferHistory(CashTransferHistoryRequest req) throws Exception {
+        return get(req, API.GET_TRANSFER_HISTORIES, CashTransferHistoryResponse.class);
+    }
+
+    public Response<CIAHistoryResponse> GetCIAHistory(CIAHistoryRequest req) throws Exception {
+        return get(req, API.GET_CIA_HISTORIES, CIAHistoryResponse.class);
+    }
+
+    public Response<EstimateCashInAdvanceFeeResponse> GetEstimateCashInAdvanceFee(EstimateCashInAdvanceFeeRequest req) throws Exception {
+        return get(req, API.GET_EST_CIA_FEE, EstimateCashInAdvanceFeeResponse.class);
+    }
+
+    public Response<CashTransferVSDResponse> CashTransferVSD(CashTransferVSDRequest req) throws Exception {
+        return post(req, API.VSD_CASH_DW, CashTransferVSDResponse.class);
+    }
+
+    public Response<CashTransferResponse> CashTransferInternal(CashTransferRequest req) throws Exception {
+        return post(req, API.TRANSFER_INTERNAL, CashTransferResponse.class);
+    }
+
+    public Response<CreateCashInAdvanceResponse> CreateCashInAdvance(CreateCashInAdvanceRequest req) throws Exception {
+        return post(req, API.CREATE_CIA, CreateCashInAdvanceResponse.class);
+    }
+
+    public Response<TransferableStockResponse> GetStockTransferable(TransferableStockRequest req) throws Exception {
+        return get(req, API.GET_STOCK_TRANSFERABLE, TransferableStockResponse.class);
+    }
+
+    public Response<StockTransferHistoryResponse> GetStockTransferHistories(StockTransferHistoryRequest req) throws Exception {
+        return get(req, API.GET_STOCK_TRANSFER_HISTORIES, StockTransferHistoryResponse.class);
+    }
+
+    public Response<StockTransferResponse> StockTransfer(StockTransferRequest req) throws Exception {
+        return post(req, API.STOCK_TRANSFER, StockTransferResponse.class);
+    }
+
+    //
+    public Response<DividendResponse> GetOrsDividend(DividendRequest req) throws Exception {
+        return get(req, API.GET_ORS_DIVIDEND, DividendResponse.class);
+    }
+
+    public Response<ExercisableQuantityResponse> GetOrsExercisableQuantity(ExercisableQuantityRequest req) throws Exception {
+        return get(req, API.GET_ORS_EXERCISABLE_QUANTITY, ExercisableQuantityResponse.class);
+    }
+
+    public Response<OnlineRightSubscriptionHistoryResponse> GetOrsHistory(OnlineRightSubscriptionHistoryRequest req) throws Exception {
+        return get(req, API.GET_ORS_HISTORIES, OnlineRightSubscriptionHistoryResponse.class);
+    }
+
+    public Response<CreateOnlineRightSubscriptionResponse> OrsCreate(CreateOnlineRightSubscriptionRequest req) throws Exception {
+        return post(req, API.ORS_CREATE, CreateOnlineRightSubscriptionResponse.class);
     }
 
     public static void main(String[] args) throws Exception {

@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ssi</groupId>
   <artifactId>fctrading</artifactId>
-  <name>com.ssi:fctrading</name>
+  <name>com.ssi.fastconnect:fctrading-client</name>
   <version>2.0.0</version>
-  <description>FastConnect API java client</description>
+  <description>FastConnect TradingAPI java client</description>
   <developers>
     <developer>
       <id>ducdv</id>
@@ -50,14 +50,16 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>sonatype-oss-release</id>
-      <build />
-    </profile>
-  </profiles>
+  <distributionManagement>
+    <repository>
+      <id>localtrading</id>
+      <url>file://./repo</url>
+    </repository>
+  </distributionManagement>
   <properties>
-    <netbeans.hint.license>lgpl3</netbeans.hint.license>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <netbeans.hint.license>lgpl3</netbeans.hint.license>
   </properties>
 </project>

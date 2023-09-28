@@ -11,4 +11,6 @@ public class ModifyOrderRequest {
     public String requestID;
     public String orderType;
     public String code;
+    public String deviceId;
+    public String userAgent;
 }

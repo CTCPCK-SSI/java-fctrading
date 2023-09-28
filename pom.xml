@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -9,9 +6,10 @@
     <groupId>com.ssi</groupId>
     <artifactId>fctrading</artifactId>
     <version>2.0.0</version>
+    <packaging>jar</packaging>
 
-    <name>com.ssi:fctrading</name>
-    <description>FastConnect API java client</description>
+    <name>com.ssi.fastconnect:fctrading-client</name>
+    <description>FastConnect TradingAPI java client</description>
 
     <licenses>
         <license>
@@ -34,12 +32,12 @@
             </roles>
         </developer>
     </developers>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.license>lgpl3</netbeans.hint.license>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
     <build>
         <plugins>
             <!--Order is important ! Execution follows the declaration order -->
@@ -52,6 +50,7 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -67,49 +66,12 @@
                 </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>sonatype-oss-release</id>
-            <build>
-                <plugins>
-                    <!-- By default, obfuscation is inactive. -->
-                    <!--
-                    <plugin>
-                        <groupId>com.github.wvengen</groupId>
-                        <artifactId>proguard-maven-plugin</artifactId>
-                        <version>2.0.6</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>proguard</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <proguardInclude>src/proguard/library.pro</proguardInclude>
-                            <obfuscate>true</obfuscate>
-                            <libs>
-                                <lib>${java.home}/lib/rt.jar</lib>
-                            </libs>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>net.sf.proguard</groupId>
-                                <artifactId>proguard-base</artifactId>
-                                <version>4.10</version>
-                                <scope>runtime</scope>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                    -->
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-    
+    <distributionManagement>
+        <repository>
+            <id>localtrading</id>
+            <url>file://./repo</url>
+        </repository>
+	</distributionManagement>
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -132,10 +94,16 @@
             <version>2.13.0</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <dependency>
             <groupId>io.github.fDizzzy</groupId>
             <artifactId>signalr-client</artifactId>
             <version>1.2.1</version> 
         </dependency>
+
     </dependencies>
     
 </project>

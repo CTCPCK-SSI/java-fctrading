@@ -11,10 +11,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
+import java.util.Enumeration;
+import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -86,7 +93,39 @@ public class Helper {
         PrivateKey priv = Helper.importPrivateKey("");
         System.out.println("SIGNATURE = " + Helper.sign(priv, "abc".getBytes(StandardCharsets.UTF_8)));
     }
+
+    public static String getRandom() {
+        int min = 0;
+        int max = 99999999;
+        Random random = new Random();
+        int randomNumber = random.nextInt(max + 1 - min) + min;
+        return String.valueOf(randomNumber);
+    }
+
+    public static String getDeviceId() {
+        String macAdd = "";
+        try {
+            InetAddress address = InetAddress.getLocalHost();
+            NetworkInterface nwi = NetworkInterface.getByInetAddress(address);
+            byte mac[] = nwi.getHardwareAddress();
+            StringBuilder sb = new StringBuilder(18);
+            for (byte b : mac) {
+                if (sb.length() > 0)
+                    sb.append('-');
+                sb.append(String.format("%02x", b));
+            }
+            macAdd = sb.toString().toUpperCase();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
+        return macAdd;
+    }
+   
 }
+
+
 
 
 

@@ -8,4 +8,6 @@ public class CancelOrderRequest {
     public String buySell;
     public String requestID;
     public String code;
+    public String deviceId;
+    public String userAgent;
 }

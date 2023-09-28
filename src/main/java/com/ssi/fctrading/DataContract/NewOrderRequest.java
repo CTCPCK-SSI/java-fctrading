@@ -19,4 +19,7 @@ public class NewOrderRequest {
     public String code;
     public boolean modifiable = true;
 
+    public String deviceId;
+    public String userAgent;
+
 }
