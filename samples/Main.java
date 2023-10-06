@@ -66,7 +66,8 @@ public class Main {
                 , (String)jsonObject.get("consumerSecret")
                 , (String)jsonObject.get("privateKey")
                 , (String)jsonObject.get("code")
-                , (String)jsonObject.get("url"));
+                , (String)jsonObject.get("url")
+                , (boolean)jsonObject.get("isSave"));
         client.init();
         while (true) {
             System.out.println("1.  NewOrder");
@@ -85,21 +86,22 @@ public class Main {
             System.out.println("14. GetOrderHistory");
             System.out.println("15. GetOrderBook");
             System.out.println("16. GetAuditOrderBook");
-            System.out.println("17. CashInAdvanceAmount");
-            System.out.println("18. GetUnsettleSoldTransaction");
-            System.out.println("19. GetCashTransferHistory");
-            System.out.println("20. GetCIAHistory");
-            System.out.println("21. GetEstimateCashInAdvanceFee");
-            System.out.println("22. CashTransferVSD");
-            System.out.println("23. CashTransferInternal");
-            System.out.println("24. CreateCashInAdvance");
-            System.out.println("25. GetStockTransferable");
-            System.out.println("26. GetStockTransferHistories");
-            System.out.println("27. StockTransfer");
-            System.out.println("28. GetOrsDividend");
-            System.out.println("29. GetOrsExercisableQuantity");
-            System.out.println("30. GetOrsHistory");
-            System.out.println("31. OrsCreate");
+            // System.out.println("17. CashInAdvanceAmount");
+            // System.out.println("18. GetUnsettleSoldTransaction");
+            // System.out.println("19. GetCashTransferHistory");
+            // System.out.println("20. GetCIAHistory");
+            // System.out.println("21. GetEstimateCashInAdvanceFee");
+            // System.out.println("22. CashTransferVSD");
+            // System.out.println("23. CashTransferInternal");
+            // System.out.println("24. CreateCashInAdvance");
+            // System.out.println("25. GetStockTransferable");
+            // System.out.println("26. GetStockTransferHistories");
+            // System.out.println("27. StockTransfer");
+            // System.out.println("28. GetOrsDividend");
+            // System.out.println("29. GetOrsExercisableQuantity");
+            // System.out.println("30. GetOrsHistory");
+            // System.out.println("31. OrsCreate");
+            System.out.println("32. GetOTP");
             System.out.println("35. Back");
             Scanner inputReader = new Scanner(System.in);
             String line = inputReader.nextLine();
@@ -197,94 +199,100 @@ public class Main {
                     AuditOrderBookRequest dataAuditOrderBookRequest = g.fromJson(auditOrderBookRequest.toJSONString(),AuditOrderBookRequest.class);
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetAuditOrderBook(dataAuditOrderBookRequest)));
                     break;
-                case "17":
-                    JSONObject CIAAmountRequest = (JSONObject)jsonObject.get("CIAAmountRequest");
-                    CIAAmountRequest dataCIAAmountRequest = g.fromJson(CIAAmountRequest.toJSONString(),CIAAmountRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashInAdvanceAmount(dataCIAAmountRequest)));
-                    break;
+                // case "17":
+                //     JSONObject CIAAmountRequest = (JSONObject)jsonObject.get("CIAAmountRequest");
+                //     CIAAmountRequest dataCIAAmountRequest = g.fromJson(CIAAmountRequest.toJSONString(),CIAAmountRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashInAdvanceAmount(dataCIAAmountRequest)));
+                //     break;
                 
-                case "18":
-                    JSONObject unsettledSoldTransactionRequest = (JSONObject)jsonObject.get("UnsettledSoldTransactionRequest");
-                    UnsettledSoldTransactionRequest dataUnsettledSoldTransactionRequest = g.fromJson(unsettledSoldTransactionRequest.toJSONString(),UnsettledSoldTransactionRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetUnsettleSoldTransaction(dataUnsettledSoldTransactionRequest)));
-                    break;
+                // case "18":
+                //     JSONObject unsettledSoldTransactionRequest = (JSONObject)jsonObject.get("UnsettledSoldTransactionRequest");
+                //     UnsettledSoldTransactionRequest dataUnsettledSoldTransactionRequest = g.fromJson(unsettledSoldTransactionRequest.toJSONString(),UnsettledSoldTransactionRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetUnsettleSoldTransaction(dataUnsettledSoldTransactionRequest)));
+                //     break;
 
-                case "19":
-                    JSONObject cashTransferHistoryRequest = (JSONObject)jsonObject.get("CashTransferHistoryRequest");
-                    CashTransferHistoryRequest dataCashTransferHistoryRequest = g.fromJson(cashTransferHistoryRequest.toJSONString(),CashTransferHistoryRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashTransferHistory(dataCashTransferHistoryRequest)));
-                    break;
+                // case "19":
+                //     JSONObject cashTransferHistoryRequest = (JSONObject)jsonObject.get("CashTransferHistoryRequest");
+                //     CashTransferHistoryRequest dataCashTransferHistoryRequest = g.fromJson(cashTransferHistoryRequest.toJSONString(),CashTransferHistoryRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashTransferHistory(dataCashTransferHistoryRequest)));
+                //     break;
 
-                case "20":
-                    JSONObject CIAHistoryRequest = (JSONObject)jsonObject.get("CIAHistoryRequest");
-                    CIAHistoryRequest dataCIAHistoryRequest = g.fromJson(CIAHistoryRequest.toJSONString(),CIAHistoryRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCIAHistory(dataCIAHistoryRequest)));
-                    break;
+                // case "20":
+                //     JSONObject CIAHistoryRequest = (JSONObject)jsonObject.get("CIAHistoryRequest");
+                //     CIAHistoryRequest dataCIAHistoryRequest = g.fromJson(CIAHistoryRequest.toJSONString(),CIAHistoryRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCIAHistory(dataCIAHistoryRequest)));
+                //     break;
 
-                case "21":
-                    JSONObject estimateCashInAdvanceFeeRequest = (JSONObject)jsonObject.get("EstimateCashInAdvanceFeeRequest");
-                    EstimateCashInAdvanceFeeRequest dataEstimateCashInAdvanceFeeRequest = g.fromJson(estimateCashInAdvanceFeeRequest.toJSONString(),EstimateCashInAdvanceFeeRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetEstimateCashInAdvanceFee(dataEstimateCashInAdvanceFeeRequest)));
-                    break;
+                // case "21":
+                //     JSONObject estimateCashInAdvanceFeeRequest = (JSONObject)jsonObject.get("EstimateCashInAdvanceFeeRequest");
+                //     EstimateCashInAdvanceFeeRequest dataEstimateCashInAdvanceFeeRequest = g.fromJson(estimateCashInAdvanceFeeRequest.toJSONString(),EstimateCashInAdvanceFeeRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetEstimateCashInAdvanceFee(dataEstimateCashInAdvanceFeeRequest)));
+                //     break;
 
-                case "22":
-                    JSONObject cashTransferVSDRequest = (JSONObject)jsonObject.get("CashTransferVSDRequest");
-                    CashTransferVSDRequest dataCashTransferVSDRequest = g.fromJson(cashTransferVSDRequest.toJSONString(),CashTransferVSDRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferVSD(dataCashTransferVSDRequest)));
-                    break;
+                // case "22":
+                //     JSONObject cashTransferVSDRequest = (JSONObject)jsonObject.get("CashTransferVSDRequest");
+                //     CashTransferVSDRequest dataCashTransferVSDRequest = g.fromJson(cashTransferVSDRequest.toJSONString(),CashTransferVSDRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferVSD(dataCashTransferVSDRequest)));
+                //     break;
 
-                case "23":
-                    JSONObject cashTransferRequest = (JSONObject)jsonObject.get("CashTransferRequest");
-                    CashTransferRequest dataCashTransferRequest = g.fromJson(cashTransferRequest.toJSONString(),CashTransferRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferInternal(dataCashTransferRequest)));
-                    break;
+                // case "23":
+                //     JSONObject cashTransferRequest = (JSONObject)jsonObject.get("CashTransferRequest");
+                //     CashTransferRequest dataCashTransferRequest = g.fromJson(cashTransferRequest.toJSONString(),CashTransferRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferInternal(dataCashTransferRequest)));
+                //     break;
 
-                case "24":
-                    JSONObject createCashInAdvanceRequest = (JSONObject)jsonObject.get("CreateCashInAdvanceRequest");
-                    CreateCashInAdvanceRequest dataCreateCashInAdvanceRequest = g.fromJson(createCashInAdvanceRequest.toJSONString(),CreateCashInAdvanceRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CreateCashInAdvance(dataCreateCashInAdvanceRequest)));
-                    break;
+                // case "24":
+                //     JSONObject createCashInAdvanceRequest = (JSONObject)jsonObject.get("CreateCashInAdvanceRequest");
+                //     CreateCashInAdvanceRequest dataCreateCashInAdvanceRequest = g.fromJson(createCashInAdvanceRequest.toJSONString(),CreateCashInAdvanceRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CreateCashInAdvance(dataCreateCashInAdvanceRequest)));
+                //     break;
                 
-                case "25":
-                    JSONObject transferableStockRequest = (JSONObject)jsonObject.get("TransferableStockRequest");
-                    TransferableStockRequest dataTransferableStockRequest = g.fromJson(transferableStockRequest.toJSONString(),TransferableStockRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferable(dataTransferableStockRequest)));
-                    break;
+                // case "25":
+                //     JSONObject transferableStockRequest = (JSONObject)jsonObject.get("TransferableStockRequest");
+                //     TransferableStockRequest dataTransferableStockRequest = g.fromJson(transferableStockRequest.toJSONString(),TransferableStockRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferable(dataTransferableStockRequest)));
+                //     break;
 
-                case "26":
-                    JSONObject stockTransferHistoryRequest = (JSONObject)jsonObject.get("StockTransferHistoryRequest");
-                    StockTransferHistoryRequest dataStockTransferHistoryRequest = g.fromJson(stockTransferHistoryRequest.toJSONString(),StockTransferHistoryRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferHistories(dataStockTransferHistoryRequest)));
-                    break;
+                // case "26":
+                //     JSONObject stockTransferHistoryRequest = (JSONObject)jsonObject.get("StockTransferHistoryRequest");
+                //     StockTransferHistoryRequest dataStockTransferHistoryRequest = g.fromJson(stockTransferHistoryRequest.toJSONString(),StockTransferHistoryRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferHistories(dataStockTransferHistoryRequest)));
+                //     break;
 
-                case "27":
-                    JSONObject stockTransferRequest = (JSONObject)jsonObject.get("StockTransferRequest");
-                    StockTransferRequest dataStockTransferRequest = g.fromJson(stockTransferRequest.toJSONString(),StockTransferRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.StockTransfer(dataStockTransferRequest)));
-                    break;
+                // case "27":
+                //     JSONObject stockTransferRequest = (JSONObject)jsonObject.get("StockTransferRequest");
+                //     StockTransferRequest dataStockTransferRequest = g.fromJson(stockTransferRequest.toJSONString(),StockTransferRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.StockTransfer(dataStockTransferRequest)));
+                //     break;
 
-                case "28":
-                    JSONObject dividendRequest = (JSONObject)jsonObject.get("DividendRequest");
-                    DividendRequest dataDividendRequest = g.fromJson(dividendRequest.toJSONString(),DividendRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsDividend(dataDividendRequest)));
-                    break;
+                // case "28":
+                //     JSONObject dividendRequest = (JSONObject)jsonObject.get("DividendRequest");
+                //     DividendRequest dataDividendRequest = g.fromJson(dividendRequest.toJSONString(),DividendRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsDividend(dataDividendRequest)));
+                //     break;
 
-                case "29":
-                    JSONObject exercisableQuantityRequest = (JSONObject)jsonObject.get("ExercisableQuantityRequest");
-                    ExercisableQuantityRequest dataExercisableQuantityRequest = g.fromJson(exercisableQuantityRequest.toJSONString(),ExercisableQuantityRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsExercisableQuantity(dataExercisableQuantityRequest)));
-                    break;
+                // case "29":
+                //     JSONObject exercisableQuantityRequest = (JSONObject)jsonObject.get("ExercisableQuantityRequest");
+                //     ExercisableQuantityRequest dataExercisableQuantityRequest = g.fromJson(exercisableQuantityRequest.toJSONString(),ExercisableQuantityRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsExercisableQuantity(dataExercisableQuantityRequest)));
+                //     break;
 
-                case "30":
-                    JSONObject onlineRightSubscriptionHistoryRequest = (JSONObject)jsonObject.get("OnlineRightSubscriptionHistoryRequest");
-                    OnlineRightSubscriptionHistoryRequest dataOnlineRightSubscriptionHistoryRequest = g.fromJson(onlineRightSubscriptionHistoryRequest.toJSONString(),OnlineRightSubscriptionHistoryRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsHistory(dataOnlineRightSubscriptionHistoryRequest)));
-                    break;
+                // case "30":
+                //     JSONObject onlineRightSubscriptionHistoryRequest = (JSONObject)jsonObject.get("OnlineRightSubscriptionHistoryRequest");
+                //     OnlineRightSubscriptionHistoryRequest dataOnlineRightSubscriptionHistoryRequest = g.fromJson(onlineRightSubscriptionHistoryRequest.toJSONString(),OnlineRightSubscriptionHistoryRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsHistory(dataOnlineRightSubscriptionHistoryRequest)));
+                //     break;
 
-                case "31":
-                    JSONObject createOnlineRightSubscriptionRequest = (JSONObject)jsonObject.get("CreateOnlineRightSubscriptionRequest");
-                    CreateOnlineRightSubscriptionRequest dataCreateOnlineRightSubscriptionRequest = g.fromJson(createOnlineRightSubscriptionRequest.toJSONString(),CreateOnlineRightSubscriptionRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.OrsCreate(dataCreateOnlineRightSubscriptionRequest)));
+                // case "31":
+                //     JSONObject createOnlineRightSubscriptionRequest = (JSONObject)jsonObject.get("CreateOnlineRightSubscriptionRequest");
+                //     CreateOnlineRightSubscriptionRequest dataCreateOnlineRightSubscriptionRequest = g.fromJson(createOnlineRightSubscriptionRequest.toJSONString(),CreateOnlineRightSubscriptionRequest.class);
+                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.OrsCreate(dataCreateOnlineRightSubscriptionRequest)));
+                //     break;
+
+                case "32":
+                    JSONObject getOTPRequest = (JSONObject)jsonObject.get("GetOTPRequest");
+                    GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
+                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
                     break;
 
                 case "35":

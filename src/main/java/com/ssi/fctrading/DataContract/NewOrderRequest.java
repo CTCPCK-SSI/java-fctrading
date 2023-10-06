@@ -7,7 +7,7 @@ public class NewOrderRequest {
     public String orderType;
     public String channelID;
     public double price;
-    public double quantity;
+    public Integer quantity;
     public String account;
     public String requestID;
     public boolean stopOrder = false;

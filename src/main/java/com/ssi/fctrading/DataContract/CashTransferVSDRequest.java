@@ -6,6 +6,7 @@ public class CashTransferVSDRequest
     public long amount;
     public String type;
     public String remark;
+    public String code;
 }
 
 

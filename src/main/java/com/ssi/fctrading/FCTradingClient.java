@@ -250,6 +250,10 @@ public class FCTradingClient {
         return post(req, API.ORS_CREATE, CreateOnlineRightSubscriptionResponse.class);
     }
 
+    public Response<GetOTPResponse> GetOTP(GetOTPRequest req) throws Exception {
+        return post(req, API.GET_OTP, GetOTPResponse.class);
+    }
+
     public static void main(String[] args) throws Exception {
         FCTradingClient client = new FCTradingClient("", ""
                 , ""
