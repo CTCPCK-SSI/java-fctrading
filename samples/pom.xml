@@ -14,7 +14,6 @@
     <build>
         <sourceDirectory>.</sourceDirectory>
         <outputDirectory>./target/classes</outputDirectory>
-        <outputDirectory>./target/classes</outputDirectory>
         <plugins>
             <!--Order is important ! Execution follows the declaration order -->
             <plugin>
@@ -48,7 +47,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>com.ssi.fctrading.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,3 +1,4 @@
+package com.ssi.fctrading;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -55,8 +56,8 @@ public class Main {
 
     public static void FCTradingAPI() throws Exception {
         JSONParser parser = new JSONParser();
-        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
-        Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
+        Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
+        //Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
         
         // Gson gson = new Gson();
@@ -297,8 +298,8 @@ public class Main {
 
     public static void FCTradingStreaming() throws Exception {
         JSONParser parser = new JSONParser();
-        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
-        Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
+        Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
+        //Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
        
         FCTradingClient client = new FCTradingClient((String)jsonObject.get("consumerId")
