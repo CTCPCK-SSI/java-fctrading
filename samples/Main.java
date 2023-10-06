@@ -56,18 +56,27 @@ public class Main {
 
     public static void FCTradingAPI() throws Exception {
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
-        //Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
+        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
+        Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
+        long twoFactorType = (long)jsonObject.get("twoFactorType");
+        String consumerId = (String)jsonObject.get("consumerId");
+        String consumerSecret = (String)jsonObject.get("consumerSecret");
+        String privateKey = (String)jsonObject.get("privateKey");
+        String code = (String)jsonObject.get("code");
+        String url = (String)jsonObject.get("url");
+        boolean isSave = false;
+        if (twoFactorType != 1) {
+            isSave = (boolean)jsonObject.get("isSave");
+        }
         
-        // Gson gson = new Gson();
-        // JsonObject config = new JsonParser().parse(read(jsonStream)).getAsJsonObject();
-        FCTradingClient client = new FCTradingClient((String)jsonObject.get("consumerId")
-                , (String)jsonObject.get("consumerSecret")
-                , (String)jsonObject.get("privateKey")
-                , (String)jsonObject.get("code")
-                , (String)jsonObject.get("url")
-                , (boolean)jsonObject.get("isSave"));
+        FCTradingClient client = new FCTradingClient(consumerId
+                , consumerSecret
+                , privateKey
+                , code
+                , url
+                , isSave
+                , (int)twoFactorType);
         client.init();
         while (true) {
             System.out.println("1.  NewOrder");
@@ -112,6 +121,13 @@ public class Main {
                     NewOrderRequest dataNewOrderRequest = g.fromJson(newOrderRequest.toJSONString(),NewOrderRequest.class);
                     dataNewOrderRequest.requestID = Helper.getRandom();
                     dataNewOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTPNewOrder = new Scanner(System.in);
+                        String lineOTP = inputOTPNewOrder.nextLine();
+                        dataNewOrderRequest.code = lineOTP;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.NewOrder(dataNewOrderRequest)));
                     break;
                 case "2":
@@ -119,6 +135,13 @@ public class Main {
                     ModifyOrderRequest dataModifyOrderRequest = g.fromJson(modifyOrderRequest.toJSONString(),ModifyOrderRequest.class);
                     dataModifyOrderRequest.requestID = Helper.getRandom();
                     dataModifyOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTP2 = new Scanner(System.in);
+                        String lineOTP2 = inputOTP2.nextLine();
+                        dataModifyOrderRequest.code = lineOTP2;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.ModifyOrder(dataModifyOrderRequest)));
                     break;
                 case "3":
@@ -126,6 +149,13 @@ public class Main {
                     CancelOrderRequest dataCancelOrderRequest = g.fromJson(cancelOrderRequest.toJSONString(),CancelOrderRequest.class);
                     dataCancelOrderRequest.requestID = Helper.getRandom();
                     dataCancelOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTP3 = new Scanner(System.in);
+                        String lineOTP3 = inputOTP3.nextLine();
+                        dataCancelOrderRequest.code = lineOTP3;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CancelOrder(dataCancelOrderRequest)));
                     break;
                 case "4":
@@ -133,6 +163,13 @@ public class Main {
                     NewOrderRequest dataDerNewOrderRequest = g.fromJson(derNewOrderRequest.toJSONString(),NewOrderRequest.class);
                     dataDerNewOrderRequest.requestID = Helper.getRandom();
                     dataDerNewOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTP4 = new Scanner(System.in);
+                        String lineOTP4 = inputOTP4.nextLine();
+                        dataDerNewOrderRequest.code = lineOTP4;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerNewOrder(dataDerNewOrderRequest)));
                     break;
                 case "5":
@@ -140,6 +177,13 @@ public class Main {
                     ModifyOrderRequest dataDerModifyOrderRequest = g.fromJson(derModifyOrderRequest.toJSONString(),ModifyOrderRequest.class);
                     dataDerModifyOrderRequest.requestID = Helper.getRandom();
                     dataDerModifyOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTP5 = new Scanner(System.in);
+                        String lineOTP5 = inputOTP5.nextLine();
+                        dataDerModifyOrderRequest.code = lineOTP5;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerModifyOrder(dataDerModifyOrderRequest)));
                     break;
                 case "6":
@@ -147,6 +191,13 @@ public class Main {
                     CancelOrderRequest dataDerCancelOrderRequest = g.fromJson(derCancelOrderRequest.toJSONString(),CancelOrderRequest.class);
                     dataDerCancelOrderRequest.requestID = Helper.getRandom();
                     dataDerCancelOrderRequest.deviceId = Helper.getDeviceId();
+                    if ((boolean)jsonObject.get("isSave") == false) {
+                        System.out.print("OTP:");
+                        Scanner inputOTP6 = new Scanner(System.in);
+                        String lineOTP6 = inputOTP6.nextLine();
+                        dataDerCancelOrderRequest.code = lineOTP6;
+                    }
+                    
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerCancelOrder(dataDerCancelOrderRequest)));
                     break;
                 case "7":
@@ -293,7 +344,21 @@ public class Main {
                     JSONObject getOTPRequest = (JSONObject)jsonObject.get("GetOTPRequest");
                     GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
+
+                    System.out.print("OTP:");
+                    Scanner inputReaderOTP32 = new Scanner(System.in);
+                    String lineOTP32 = inputReaderOTP32.nextLine();
+                    //push otp to accesstoken
+                    AccessTokenRequest dataAccessTokenReq = new AccessTokenRequest();
+                    dataAccessTokenReq.consumerID = consumerId;
+                    dataAccessTokenReq.consumerSecret = consumerSecret;
+                    dataAccessTokenReq.isSave = (boolean)jsonObject.get("isSave");
+                    dataAccessTokenReq.twoFactorType = (int)twoFactorType;
+                    dataAccessTokenReq.code = lineOTP32;
+                    client.init(dataAccessTokenReq);
+                    //System.out.println("ResponseToken: " + new ObjectMapper().writeValueAsString(client.AccessToken(dataAccessTokenReq)));
                     break;
+
 
                 case "35":
                     return;
@@ -306,15 +371,17 @@ public class Main {
 
     public static void FCTradingStreaming() throws Exception {
         JSONParser parser = new JSONParser();
-        Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
-        //Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
+        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
+        Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
+        long twoFactorType = (long)jsonObject.get("twoFactorType");
        
         FCTradingClient client = new FCTradingClient((String)jsonObject.get("consumerId")
                 , (String)jsonObject.get("consumerSecret")
                 , (String)jsonObject.get("privateKey")
                 , (String)jsonObject.get("code")
-                , (String)jsonObject.get("url"));
+                , (String)jsonObject.get("url")
+                , (int)twoFactorType );
         client.init();
         FCTradingStreaming streaming = new FCTradingStreaming(client, (String)jsonObject.get("streaming_url"));
         streaming.onReceived(new MessageReceivedHandler() {

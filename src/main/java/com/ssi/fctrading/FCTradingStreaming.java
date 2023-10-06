@@ -92,6 +92,7 @@ public class FCTradingStreaming {
                 , "12345678"
                 , "http://192.168.213.98:1150"
                 , true
+                , 0
         );
         FCTradingStreaming streaming = new FCTradingStreaming(client, "https://fc-tradehub-uat.ssi.com.vn");
         streaming.onReceived(new MessageReceivedHandler() {

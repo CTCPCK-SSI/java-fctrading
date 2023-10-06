@@ -29,6 +29,7 @@ public class FCTradingClient {
     private final String _code;
     private final String _url;
     private final boolean _isSave;
+    private final int _twoFactorType;
     private final OkHttpClient _client = new OkHttpClient();
     private AccessTokenResponse _accessToken = null;
     // PUBLIC
@@ -36,21 +37,23 @@ public class FCTradingClient {
     /**
      * Main class.
      */
-    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url, int twoFactorType) throws NoSuchAlgorithmException, InvalidKeySpecException {
         _consumerId = consumerId;
         _consumerSecret = consumerSecret;
         _privateKey = Helper.importPrivateKey(privateKey);
         _code = code;
         _isSave = true;
         _url = url;
+        _twoFactorType = twoFactorType;
     }
 
-    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url, boolean isSave) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url, boolean isSave, int twoFactorType) throws NoSuchAlgorithmException, InvalidKeySpecException {
         _consumerId = consumerId;
         _consumerSecret = consumerSecret;
         _privateKey = Helper.importPrivateKey(privateKey);
         _code = code;
         _isSave = isSave;
+        _twoFactorType = twoFactorType;
         if(url.endsWith("/"))
             _url = url.substring(0,url.length() -1) ;
         else
@@ -61,12 +64,36 @@ public class FCTradingClient {
         AccessTokenRequest req = new AccessTokenRequest();
         req.consumerID = _consumerId;
         req.consumerSecret = _consumerSecret;
-        req.twoFactorType = 0;
+        req.twoFactorType = _twoFactorType;
         req.code = _code;
         req.isSave = _isSave;
         ObjectMapper objectMapper = new ObjectMapper();
         String json = new ObjectMapper().writeValueAsString(req);
         RequestBody body = RequestBody.create(json, JSON);
+        
+        Request request = new Request.Builder()
+                .url(_url + API.ACCESS_TOKEN)
+                .post(body)
+                .build();
+        try (okhttp3.Response response = _client.newCall(request).execute()) {
+            String rString = response.body().string();
+            Response<AccessTokenResponse> access = objectMapper.readValue(rString, new TypeReference<Response<AccessTokenResponse>>() {
+            });
+            if (access.status == 200)
+                _accessToken = access.data;
+            else
+                System.out.println(access.message);
+            System.out.println("AccessToken = " + _accessToken.accessToken);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void init(AccessTokenRequest req) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = new ObjectMapper().writeValueAsString(req);
+        RequestBody body = RequestBody.create(json, JSON);
+        
         Request request = new Request.Builder()
                 .url(_url + API.ACCESS_TOKEN)
                 .post(body)
@@ -260,6 +287,7 @@ public class FCTradingClient {
                 , ""
                 , "http://192.168.213.98:1150"
                 , true
+                , 0
         );
         client.init();
 
