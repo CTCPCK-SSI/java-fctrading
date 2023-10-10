@@ -122,7 +122,7 @@ public class Main {
                     dataNewOrderRequest.requestID = Helper.getRandom();
                     dataNewOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTPNewOrder = new Scanner(System.in);
                         String lineOTP = inputOTPNewOrder.nextLine();
                         dataNewOrderRequest.code = lineOTP;
@@ -136,7 +136,7 @@ public class Main {
                     dataModifyOrderRequest.requestID = Helper.getRandom();
                     dataModifyOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTP2 = new Scanner(System.in);
                         String lineOTP2 = inputOTP2.nextLine();
                         dataModifyOrderRequest.code = lineOTP2;
@@ -150,7 +150,7 @@ public class Main {
                     dataCancelOrderRequest.requestID = Helper.getRandom();
                     dataCancelOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTP3 = new Scanner(System.in);
                         String lineOTP3 = inputOTP3.nextLine();
                         dataCancelOrderRequest.code = lineOTP3;
@@ -164,7 +164,7 @@ public class Main {
                     dataDerNewOrderRequest.requestID = Helper.getRandom();
                     dataDerNewOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTP4 = new Scanner(System.in);
                         String lineOTP4 = inputOTP4.nextLine();
                         dataDerNewOrderRequest.code = lineOTP4;
@@ -178,7 +178,7 @@ public class Main {
                     dataDerModifyOrderRequest.requestID = Helper.getRandom();
                     dataDerModifyOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTP5 = new Scanner(System.in);
                         String lineOTP5 = inputOTP5.nextLine();
                         dataDerModifyOrderRequest.code = lineOTP5;
@@ -192,7 +192,7 @@ public class Main {
                     dataDerCancelOrderRequest.requestID = Helper.getRandom();
                     dataDerCancelOrderRequest.deviceId = Helper.getDeviceId();
                     if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("OTP:");
+                        System.out.print("Code:");
                         Scanner inputOTP6 = new Scanner(System.in);
                         String lineOTP6 = inputOTP6.nextLine();
                         dataDerCancelOrderRequest.code = lineOTP6;
@@ -345,7 +345,7 @@ public class Main {
                     GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
                     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
 
-                    System.out.print("OTP:");
+                    System.out.print("Code:");
                     Scanner inputReaderOTP32 = new Scanner(System.in);
                     String lineOTP32 = inputReaderOTP32.nextLine();
                     //push otp to accesstoken
@@ -374,15 +374,52 @@ public class Main {
         //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
         Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
+        
+        String consumerId = (String)jsonObject.get("consumerId");
+        String consumerSecret = (String)jsonObject.get("consumerSecret");
         long twoFactorType = (long)jsonObject.get("twoFactorType");
-       
-        FCTradingClient client = new FCTradingClient((String)jsonObject.get("consumerId")
-                , (String)jsonObject.get("consumerSecret")
+
+        FCTradingClient client = new FCTradingClient(consumerId
+                , consumerSecret
                 , (String)jsonObject.get("privateKey")
                 , (String)jsonObject.get("code")
                 , (String)jsonObject.get("url")
+                , false
                 , (int)twoFactorType );
         client.init();
+        // boolean isSave = true;
+        // if (twoFactorType == 1) {
+        //     isSave = false;
+        // }
+        // FCTradingClient client = new FCTradingClient(consumerId
+        //         , consumerSecret
+        //         , (String)jsonObject.get("privateKey")
+        //         , (String)jsonObject.get("code")
+        //         , (String)jsonObject.get("url")
+        //         , isSave
+        //         , (int)twoFactorType );
+        // client.init();
+        
+        // if (twoFactorType == 1) {
+        //     //call get otp
+        //     Gson g = new Gson();
+        //     JSONObject getOTPRequest = (JSONObject)jsonObject.get("GetOTPRequest");
+        //     GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
+        //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
+
+        //     System.out.print("OTP:");
+        //     Scanner inputReaderOTP32 = new Scanner(System.in);
+        //     String lineOTP32 = inputReaderOTP32.nextLine();
+        //     //push otp to accesstoken
+        //     AccessTokenRequest dataAccessTokenReq = new AccessTokenRequest();
+        //     dataAccessTokenReq.consumerID = consumerId;
+        //     dataAccessTokenReq.consumerSecret = consumerSecret;
+        //     dataAccessTokenReq.isSave = true;
+        //     dataAccessTokenReq.twoFactorType = (int)twoFactorType;
+        //     dataAccessTokenReq.code = lineOTP32;
+        //     client.init(dataAccessTokenReq);
+        // }
+
         FCTradingStreaming streaming = new FCTradingStreaming(client, (String)jsonObject.get("streaming_url"));
         streaming.onReceived(new MessageReceivedHandler() {
             @Override
