@@ -285,7 +285,7 @@ public class FCTradingClient {
         FCTradingClient client = new FCTradingClient("", ""
                 , ""
                 , ""
-                , "http://192.168.213.98:1150"
+                , ""
                 , true
                 , 0
         );

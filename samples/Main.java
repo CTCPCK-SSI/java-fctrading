@@ -56,7 +56,6 @@ public class Main {
 
     public static void FCTradingAPI() throws Exception {
         JSONParser parser = new JSONParser();
-        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
         Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
         long twoFactorType = (long)jsonObject.get("twoFactorType");
@@ -371,7 +370,6 @@ public class Main {
 
     public static void FCTradingStreaming() throws Exception {
         JSONParser parser = new JSONParser();
-        //Object obj = parser.parse(new FileReader("C:\\Users\\hoaht\\Desktop\\fctrading.json"));
         Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
         JSONObject jsonObject = (JSONObject)obj;
         
