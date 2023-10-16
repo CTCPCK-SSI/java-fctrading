@@ -387,39 +387,6 @@ public class Main {
                 , false
                 , (int)twoFactorType );
         client.init();
-        // boolean isSave = true;
-        // if (twoFactorType == 1) {
-        //     isSave = false;
-        // }
-        // FCTradingClient client = new FCTradingClient(consumerId
-        //         , consumerSecret
-        //         , (String)jsonObject.get("privateKey")
-        //         , (String)jsonObject.get("code")
-        //         , (String)jsonObject.get("url")
-        //         , isSave
-        //         , (int)twoFactorType );
-        // client.init();
-        
-        // if (twoFactorType == 1) {
-        //     //call get otp
-        //     Gson g = new Gson();
-        //     JSONObject getOTPRequest = (JSONObject)jsonObject.get("GetOTPRequest");
-        //     GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
-        //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
-
-        //     System.out.print("OTP:");
-        //     Scanner inputReaderOTP32 = new Scanner(System.in);
-        //     String lineOTP32 = inputReaderOTP32.nextLine();
-        //     //push otp to accesstoken
-        //     AccessTokenRequest dataAccessTokenReq = new AccessTokenRequest();
-        //     dataAccessTokenReq.consumerID = consumerId;
-        //     dataAccessTokenReq.consumerSecret = consumerSecret;
-        //     dataAccessTokenReq.isSave = true;
-        //     dataAccessTokenReq.twoFactorType = (int)twoFactorType;
-        //     dataAccessTokenReq.code = lineOTP32;
-        //     client.init(dataAccessTokenReq);
-        // }
-
         FCTradingStreaming streaming = new FCTradingStreaming(client, (String)jsonObject.get("streaming_url"));
         streaming.onReceived(new MessageReceivedHandler() {
             @Override
