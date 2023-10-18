@@ -1,0 +1,208 @@
+{
+  "url": "",
+  "streaming_url": "",
+  "consumerId": "",
+  "consumerSecret": "",
+  "privateKey": "",
+  "code": "",
+  "isSave": true,
+  "twoFactorType": 1,
+  "NewOrderRequest": {
+    "instrumentID": "SSI",
+    "market": "VN",
+    "buySell": "B",
+    "orderType": "LO",
+    "channelID": "TA",
+    "price": 21000,
+    "quantity": 100,
+    "account": "0901351",
+    "stopOrder": true,
+    "stopPrice": 22000,
+    "stopType": "D",
+    "stopStep": 0,
+    "lossStep": 0,
+    "profitStep": 0,
+    "code": "268627",
+    "modifiable": true,
+	"userAgent":"fctrading"
+  },
+  "ModifyOrderRequest": {
+    "orderID": "12906599",
+    "price": 21000,
+    "quantity": 200,
+    "account": "0901351",
+    "instrumentID": "SSI",
+    "marketID": "VN",
+    "buySell": "B",
+    "orderType": "LO",
+    "code": "12345678",
+	"userAgent":"fctrading"
+  },
+  "CancelOrderRequest": {
+    "orderID": "12906599",
+    "account": "0901351",
+    "marketID": "VN",
+    "instrumentID": "SSI",
+    "buySell": "B",
+    "code": "12345678",
+	"userAgent":"fctrading"
+  },
+  "DerNewOrderRequest": {
+    "instrumentID": "VN30F2310",
+    "market": "VNFE",
+    "buySell": "B",
+    "orderType": "LO",
+    "channelID": "TA",
+    "price": 1118,
+    "quantity": 1,
+    "account": "0901358",
+    "stopOrder": false,
+    "stopPrice": 0,
+    "stopType": "",
+    "stopStep": 0,
+    "lossStep": 0,
+    "profitStep": 0,
+    "code": "12345678",
+    "modifiable": true,
+	"userAgent":"fctrading"
+  },
+  "DerModifyOrderRequest": {
+    "orderID": "12906599",
+    "price": 1118,
+    "quantity": 2,
+    "account": "0901358",
+    "instrumentID": "VN30F2310",
+    "marketID": "VNFE",
+    "buySell": "B",
+    "orderType": "LO",
+    "code": "12345678",
+	"userAgent":"fctrading"
+  },
+  "DerCancelOrderRequest": {
+    "orderID": "12906599",
+    "account": "0901358",
+    "marketID": "VNFE",
+    "instrumentID": "VN30F2310",
+    "buySell": "B",
+    "code": "12345678",
+	"userAgent":"fctrading"
+  },
+  "CashAccountBalanceRequest": {
+    "account": "0901351"
+  },
+  "DerCashAccountBalanceRequest": {
+    "account": "0901358"
+  },
+  "PPMMRAccountRequest": {
+    "account": "0901351"
+  },
+  "StockAccountPositionRequest": {
+    "account": "0901351"
+  },
+  "DerAccountPositionRequest": {
+    "account": "0901358",
+    "querySummary": false
+  },
+  "MaxBuyQtyRequest": {
+    "account": "0901351",
+    "instrumentID": "SSI",
+    "price": 20000
+  },
+  "MaxSellQtyRequest": {
+    "account": "0901358",
+    "instrumentID": "VN30F2310",
+    "price": 20000
+  },
+  "OrderHistoryRequest": {
+    "account": "0901351",
+    "startDate": "29/08/2022",
+    "endDate": "29/08/2022"
+  },
+  "OrderBookRequest": {
+    "account": "0901351"
+  },
+  "AuditOrderBookRequest": {
+    "account": "0901351"
+  },
+  "CIAAmountRequest": {
+    "account": "0901351"
+  },
+  "UnsettledSoldTransactionRequest": {
+    "account": "0901351",
+	"settleDate":"29/08/2022"
+  },
+  "CashTransferHistoryRequest": {
+    "account": "0901351",
+    "fromDate": "29/08/2022",
+    "toDate": "29/08/2022"
+  },
+  "CIAHistoryRequest": {
+    "account": "0901351",
+    "startDate": "29/08/2022",
+    "endDate": "29/08/2022"
+  },
+  "EstimateCashInAdvanceFeeRequest": {
+    "account": "0901351",
+    "CIAAmount": 0,
+    "receiveAmount": 0
+  },
+  "CashTransferVSDRequest": {
+	"code": "12345678",
+    "account": "0901351",
+    "amount": 1000,
+    "type": "",
+	"remark": ""
+  },
+  "CashTransferRequest": {
+	"code": "12345678",
+    "account": "0901351",
+    "beneficiaryAccount": "0901356",
+    "amount": 1000,
+	"remark": ""
+  },
+  "CreateCashInAdvanceRequest": {
+	"code": "12345678",
+    "account": "0901351",
+    "CIAAmount": 1000,
+	"receiveAmount": 1000
+  },
+  "TransferableStockRequest": {
+    "account": "0901351"
+  },
+  "StockTransferHistoryRequest": {
+	"account": "0901351",
+    "startDate": "29/08/2022",
+    "endDate": "29/08/2022"
+  },
+  "StockTransferRequest": {
+	"code": "12345678",
+	"account": "0901351",
+    "beneficiaryAccount": "0901356",
+    "exchangeID": "VN",
+	"instrumentID": "SSI",
+    "quantity": 100
+  },
+  "DividendRequest": {
+	"account": "0901351"
+  },
+  "ExercisableQuantityRequest": {
+	"account": "0901351"
+  },
+  "OnlineRightSubscriptionHistoryRequest": {
+	"account": "0901351",
+    "startDate": "29/08/2022",
+    "endDate": "29/08/2022"
+  },
+  "CreateOnlineRightSubscriptionRequest": {
+	"code": "12345678",
+	"account": "0901351",
+    "instrumentID": "SSI",
+    "entitlementID": "",
+	"quantity": 100,
+    "amount": 100
+  },
+  "GetOTPRequest": {
+	"consumerID": "dd11c30e98494385a180f6ebae321272",
+    "consumerSecret": "7526cf28e8024d249615ec57b940bec0"
+  }
+}
