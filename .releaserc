@@ -24,12 +24,10 @@
     [
       "@semantic-release/github",
       {
-        "assets": [
-          {
-            "name": "fctrading-client.jar",
-            "path": "target/*.jar"
-          }
-        ]
+        "assets": [{
+          "name": "fctrading-client.jar",
+          "path": "target/*.jar"
+        }]
       }
     ]
   ]
