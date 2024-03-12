@@ -25,12 +25,13 @@ public class Main {
     public static String read(InputStream s) throws IOException {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
-        for (int length; (length = s.read(buffer)) != -1; ) {
+        for (int length; (length = s.read(buffer)) != -1;) {
             result.write(buffer, 0, length);
         }
         // StandardCharsets.UTF_8.name() > JDK 7
         return result.toString("UTF-8");
     }
+
     public static void main(String[] args) throws Exception {
         while (true) {
             System.out.println("1. FCTrading API");
@@ -54,310 +55,251 @@ public class Main {
         }
     }
 
+    private static void printLn(Object arg) throws Exception {
+        System.out.println("Response: " + new ObjectMapper().writeValueAsString(arg));
+    }
+
     public static void FCTradingAPI() throws Exception {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
-        JSONObject jsonObject = (JSONObject)obj;
-        long twoFactorType = (long)jsonObject.get("twoFactorType");
-        String consumerId = (String)jsonObject.get("consumerId");
-        String consumerSecret = (String)jsonObject.get("consumerSecret");
-        String privateKey = (String)jsonObject.get("privateKey");
-        String code = (String)jsonObject.get("code");
-        String url = (String)jsonObject.get("url");
+        JSONObject jsonObject = (JSONObject) obj;
+        long twoFactorType = (long) jsonObject.get("twoFactorType");
+        String consumerId = (String) jsonObject.get("consumerId");
+        String consumerSecret = (String) jsonObject.get("consumerSecret");
+        String privateKey = (String) jsonObject.get("privateKey");
+        String code = (String) jsonObject.get("code");
+        String url = (String) jsonObject.get("url");
         boolean isSave = false;
         if (twoFactorType != 1) {
-            isSave = (boolean)jsonObject.get("isSave");
+            isSave = (boolean) jsonObject.get("isSave");
         }
-        
-        FCTradingClient client = new FCTradingClient(consumerId
-                , consumerSecret
-                , privateKey
-                , code
-                , url
-                , isSave
-                , (int)twoFactorType);
+
+        FCTradingClient client = new FCTradingClient(consumerId, consumerSecret, privateKey, url);
         client.init();
         while (true) {
-            System.out.println("1.  NewOrder");
-            System.out.println("2.  ModifyOrder");
-            System.out.println("3.  CancelOrder");
-            System.out.println("4.  DerNewOrder");
-            System.out.println("5.  DerModifyOrder");
-            System.out.println("6.  DerCancelOrder");
-            System.out.println("7.  GetCashBalance");
-            System.out.println("8.  GetDerivativeBalance");
-            System.out.println("9.  GetPPMMRAccount");
-            System.out.println("10. GetStockPosition");
-            System.out.println("11. GetDerivativePosition");
-            System.out.println("12. GetMaxBuyQty");
-            System.out.println("13. GetMaxSellQty");
-            System.out.println("14. GetOrderHistory");
-            System.out.println("15. GetOrderBook");
-            System.out.println("16. GetAuditOrderBook");
-            // System.out.println("17. CashInAdvanceAmount");
-            // System.out.println("18. GetUnsettleSoldTransaction");
-            // System.out.println("19. GetCashTransferHistory");
-            // System.out.println("20. GetCIAHistory");
-            // System.out.println("21. GetEstimateCashInAdvanceFee");
-            // System.out.println("22. CashTransferVSD");
-            // System.out.println("23. CashTransferInternal");
-            // System.out.println("24. CreateCashInAdvance");
-            // System.out.println("25. GetStockTransferable");
-            // System.out.println("26. GetStockTransferHistories");
-            // System.out.println("27. StockTransfer");
-            // System.out.println("28. GetOrsDividend");
-            // System.out.println("29. GetOrsExercisableQuantity");
-            // System.out.println("30. GetOrsHistory");
-            // System.out.println("31. OrsCreate");
-            System.out.println("32. GetOTP");
+            System.out.println("1.  GetOTP");
+            System.out.println("2.  VerifyOTP");
+            System.out.println("3.  NewOrder");
+            System.out.println("4.  ModifyOrder");
+            System.out.println("5.  CancelOrder");
+            System.out.println("6.  DerNewOrder");
+            System.out.println("7.  DerModifyOrder");
+            System.out.println("8.  DerCancelOrder");
+            System.out.println("9.  GetCashBalance");
+            System.out.println("10. GetDerivativeBalance");
+            System.out.println("11. GetPPMMRAccount");
+            System.out.println("12. GetStockPosition");
+            System.out.println("13. GetDerivativePosition");
+            System.out.println("14. GetMaxBuyQty");
+            System.out.println("15. GetMaxSellQty");
+            System.out.println("16. GetOrderHistory");
+            System.out.println("17. GetOrderBook");
+            System.out.println("18. GetAuditOrderBook");
+            System.out.println("19. CashInAdvanceAmount");
+            System.out.println("20. GetUnsettleSoldTransaction");
+            System.out.println("21. GetCashTransferHistory");
+            System.out.println("22. GetCIAHistory");
+            System.out.println("23. GetEstimateCashInAdvanceFee");
+            System.out.println("24. CashTransferVSD");
+            System.out.println("25. CashTransferInternal");
+            System.out.println("26. CreateCashInAdvance");
+            System.out.println("27. GetStockTransferable");
+            System.out.println("28. GetStockTransferHistories");
+            System.out.println("29. StockTransfer");
+            System.out.println("30. GetOrsDividend");
+            System.out.println("31. GetOrsExercisableQuantity");
+            System.out.println("32. GetOrsHistory");
+            System.out.println("33. OrsCreate");
+            System.out.println("34. GetRatelimit");
             System.out.println("35. Back");
             Scanner inputReader = new Scanner(System.in);
             String line = inputReader.nextLine();
             Gson g = new Gson();
             switch (line) {
                 case "1":
-                    JSONObject newOrderRequest = (JSONObject)jsonObject.get("NewOrderRequest");
-                    NewOrderRequest dataNewOrderRequest = g.fromJson(newOrderRequest.toJSONString(),NewOrderRequest.class);
-                    dataNewOrderRequest.requestID = Helper.getRandom();
-                    dataNewOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTPNewOrder = new Scanner(System.in);
-                        String lineOTP = inputOTPNewOrder.nextLine();
-                        dataNewOrderRequest.code = lineOTP;
-                    }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.NewOrder(dataNewOrderRequest)));
+                    GetOTPRequest req = new GetOTPRequest();
+                    req.consumerID = consumerId;
+                    req.consumerSecret = consumerSecret;
+                    printLn((client.GetOTP(req)));
                     break;
                 case "2":
-                    JSONObject modifyOrderRequest = (JSONObject)jsonObject.get("ModifyOrderRequest");
-                    ModifyOrderRequest dataModifyOrderRequest = g.fromJson(modifyOrderRequest.toJSONString(),ModifyOrderRequest.class);
-                    dataModifyOrderRequest.requestID = Helper.getRandom();
-                    dataModifyOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTP2 = new Scanner(System.in);
-                        String lineOTP2 = inputOTP2.nextLine();
-                        dataModifyOrderRequest.code = lineOTP2;
-                    }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.ModifyOrder(dataModifyOrderRequest)));
+                    printLn((client.GetAccessToken(System.console().readLine("Code: "), (int) twoFactorType, true)));
                     break;
                 case "3":
-                    JSONObject cancelOrderRequest = (JSONObject)jsonObject.get("CancelOrderRequest");
-                    CancelOrderRequest dataCancelOrderRequest = g.fromJson(cancelOrderRequest.toJSONString(),CancelOrderRequest.class);
-                    dataCancelOrderRequest.requestID = Helper.getRandom();
-                    dataCancelOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTP3 = new Scanner(System.in);
-                        String lineOTP3 = inputOTP3.nextLine();
-                        dataCancelOrderRequest.code = lineOTP3;
+                    NewOrderRequest dataNewOrderRequest = getRequest(jsonObject, "NewOrderRequest",
+                            NewOrderRequest.class);
+                    dataNewOrderRequest.requestID = Helper.getRandom();
+                    dataNewOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataNewOrderRequest.code = System.console().readLine("Code: ");
                     }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CancelOrder(dataCancelOrderRequest)));
+                    printLn((client.NewOrder(dataNewOrderRequest)));
                     break;
                 case "4":
-                    JSONObject derNewOrderRequest = (JSONObject)jsonObject.get("DerNewOrderRequest");
-                    NewOrderRequest dataDerNewOrderRequest = g.fromJson(derNewOrderRequest.toJSONString(),NewOrderRequest.class);
-                    dataDerNewOrderRequest.requestID = Helper.getRandom();
-                    dataDerNewOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTP4 = new Scanner(System.in);
-                        String lineOTP4 = inputOTP4.nextLine();
-                        dataDerNewOrderRequest.code = lineOTP4;
+                    ModifyOrderRequest dataModifyOrderRequest = getRequest(jsonObject, "ModifyOrderRequest",
+                            ModifyOrderRequest.class);
+                    dataModifyOrderRequest.requestID = Helper.getRandom();
+                    dataModifyOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataModifyOrderRequest.code = System.console().readLine("Code: ");
                     }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerNewOrder(dataDerNewOrderRequest)));
+                    printLn((client.ModifyOrder(dataModifyOrderRequest)));
                     break;
                 case "5":
-                    JSONObject derModifyOrderRequest = (JSONObject)jsonObject.get("DerModifyOrderRequest");
-                    ModifyOrderRequest dataDerModifyOrderRequest = g.fromJson(derModifyOrderRequest.toJSONString(),ModifyOrderRequest.class);
-                    dataDerModifyOrderRequest.requestID = Helper.getRandom();
-                    dataDerModifyOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTP5 = new Scanner(System.in);
-                        String lineOTP5 = inputOTP5.nextLine();
-                        dataDerModifyOrderRequest.code = lineOTP5;
+                    CancelOrderRequest dataCancelOrderRequest = getRequest(jsonObject, "CancelOrderRequest",
+                            CancelOrderRequest.class);
+                    dataCancelOrderRequest.requestID = Helper.getRandom();
+                    dataCancelOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataCancelOrderRequest.code = System.console().readLine("Code: ");
                     }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerModifyOrder(dataDerModifyOrderRequest)));
+                    printLn((client.CancelOrder(dataCancelOrderRequest)));
                     break;
                 case "6":
-                    JSONObject derCancelOrderRequest = (JSONObject)jsonObject.get("DerCancelOrderRequest");
-                    CancelOrderRequest dataDerCancelOrderRequest = g.fromJson(derCancelOrderRequest.toJSONString(),CancelOrderRequest.class);
-                    dataDerCancelOrderRequest.requestID = Helper.getRandom();
-                    dataDerCancelOrderRequest.deviceId = Helper.getDeviceId();
-                    if ((boolean)jsonObject.get("isSave") == false) {
-                        System.out.print("Code:");
-                        Scanner inputOTP6 = new Scanner(System.in);
-                        String lineOTP6 = inputOTP6.nextLine();
-                        dataDerCancelOrderRequest.code = lineOTP6;
+                    NewOrderRequest dataDerNewOrderRequest = getRequest(jsonObject, "DerNewOrderRequest",
+                            NewOrderRequest.class);
+                    dataDerNewOrderRequest.requestID = Helper.getRandom();
+                    dataDerNewOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataDerNewOrderRequest.code = System.console().readLine("Code: ");
                     }
-                    
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.DerCancelOrder(dataDerCancelOrderRequest)));
+                    printLn((client.DerNewOrder(dataDerNewOrderRequest)));
                     break;
                 case "7":
-                    JSONObject accountBalanceRequest = (JSONObject)jsonObject.get("CashAccountBalanceRequest");
-                    AccountBalanceRequest dataAccountBalanceRequest = g.fromJson(accountBalanceRequest.toJSONString(),AccountBalanceRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashBalance(dataAccountBalanceRequest)));
+                    ModifyOrderRequest dataDerModifyOrderRequest = getRequest(jsonObject, "DerModifyOrderRequest",
+                            ModifyOrderRequest.class);
+                    dataDerModifyOrderRequest.requestID = Helper.getRandom();
+                    dataDerModifyOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataDerModifyOrderRequest.code = System.console().readLine("Code: ");
+                    }
+                    printLn((client.DerModifyOrder(dataDerModifyOrderRequest)));
                     break;
                 case "8":
-                    JSONObject derAccountBalanceRequest = (JSONObject)jsonObject.get("DerCashAccountBalanceRequest");
-                    AccountBalanceRequest dataDerAccountBalanceRequest = g.fromJson(derAccountBalanceRequest.toJSONString(),AccountBalanceRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetDerivativeBalance(dataDerAccountBalanceRequest)));
+                    CancelOrderRequest dataDerCancelOrderRequest = getRequest(jsonObject, "DerCancelOrderRequest",
+                            CancelOrderRequest.class);
+                    dataDerCancelOrderRequest.requestID = Helper.getRandom();
+                    dataDerCancelOrderRequest.deviceId = Helper.getDeviceId();
+                    if (!client.IsVerify2FA()) {
+                        dataDerCancelOrderRequest.code = System.console().readLine("Code: ");
+                    }
+                    printLn((client.DerCancelOrder(dataDerCancelOrderRequest)));
                     break;
                 case "9":
-                    JSONObject PPMMRAccountRequest = (JSONObject)jsonObject.get("PPMMRAccountRequest");
-                    PPMMRAccountRequest dataPPMMRAccountRequest = g.fromJson(PPMMRAccountRequest.toJSONString(),PPMMRAccountRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetPPMMRAccount(dataPPMMRAccountRequest)));
+                    printLn((client.GetCashBalance(
+                            getRequest(jsonObject, "CashAccountBalanceRequest", AccountBalanceRequest.class))));
                     break;
                 case "10":
-                    JSONObject accountPositionRequest = (JSONObject)jsonObject.get("StockAccountPositionRequest");
-                    AccountPositionRequest dataAccountPositionRequest = g.fromJson(accountPositionRequest.toJSONString(),AccountPositionRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockPosition(dataAccountPositionRequest)));
+                    printLn((client.GetDerivativeBalance(
+                            getRequest(jsonObject, "DerCashAccountBalanceRequest", AccountBalanceRequest.class))));
                     break;
                 case "11":
-                    JSONObject derAccountPositionRequest = (JSONObject)jsonObject.get("DerAccountPositionRequest");
-                    AccountPositionRequest dataDerAccountPositionRequest = g.fromJson(derAccountPositionRequest.toJSONString(),AccountPositionRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetDerivativePosition(dataDerAccountPositionRequest)));
+                    printLn((client.GetPPMMRAccount(
+                            getRequest(jsonObject, "PPMMRAccountRequest", PPMMRAccountRequest.class))));
                     break;
                 case "12":
-                    JSONObject maxBuyQtyRequest = (JSONObject)jsonObject.get("MaxBuyQtyRequest");
-                    MaxQtyRequest dataMaxBuyQtyRequest = g.fromJson(maxBuyQtyRequest.toJSONString(),MaxQtyRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetMaxBuyQty(dataMaxBuyQtyRequest)));
+                    printLn((client.GetStockPosition(
+                            getRequest(jsonObject, "StockAccountPositionRequest", AccountPositionRequest.class))));
                     break;
                 case "13":
-                    JSONObject maxSellQtyRequest = (JSONObject)jsonObject.get("MaxSellQtyRequest");
-                    MaxQtyRequest dataMaxSellQtyRequest = g.fromJson(maxSellQtyRequest.toJSONString(),MaxQtyRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetMaxSellQty(dataMaxSellQtyRequest)));
+                    printLn((client.GetDerivativePosition(
+                            getRequest(jsonObject, "DerAccountPositionRequest", AccountPositionRequest.class))));
                     break;
                 case "14":
-                    JSONObject orderHistoryRequest = (JSONObject)jsonObject.get("OrderHistoryRequest");
-                    OrderHistoryRequest dataOrderHistoryRequest = g.fromJson(orderHistoryRequest.toJSONString(),OrderHistoryRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrderHistory(dataOrderHistoryRequest)));
+                    printLn((client.GetMaxBuyQty(getRequest(jsonObject, "MaxBuyQtyRequest", MaxQtyRequest.class))));
                     break;
                 case "15":
-                    JSONObject orderBookRequest = (JSONObject)jsonObject.get("OrderBookRequest");
-                    OrderBookRequest dataOrderBookRequest = g.fromJson(orderBookRequest.toJSONString(),OrderBookRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrderBook(dataOrderBookRequest)));
+                    printLn((client.GetMaxSellQty(getRequest(jsonObject, "MaxSellQtyRequest", MaxQtyRequest.class))));
                     break;
                 case "16":
-                    JSONObject auditOrderBookRequest = (JSONObject)jsonObject.get("AuditOrderBookRequest");
-                    AuditOrderBookRequest dataAuditOrderBookRequest = g.fromJson(auditOrderBookRequest.toJSONString(),AuditOrderBookRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetAuditOrderBook(dataAuditOrderBookRequest)));
+                    printLn((client.GetOrderHistory(
+                            getRequest(jsonObject, "OrderHistoryRequest", OrderHistoryRequest.class))));
                     break;
-                // case "17":
-                //     JSONObject CIAAmountRequest = (JSONObject)jsonObject.get("CIAAmountRequest");
-                //     CIAAmountRequest dataCIAAmountRequest = g.fromJson(CIAAmountRequest.toJSONString(),CIAAmountRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashInAdvanceAmount(dataCIAAmountRequest)));
-                //     break;
-                
-                // case "18":
-                //     JSONObject unsettledSoldTransactionRequest = (JSONObject)jsonObject.get("UnsettledSoldTransactionRequest");
-                //     UnsettledSoldTransactionRequest dataUnsettledSoldTransactionRequest = g.fromJson(unsettledSoldTransactionRequest.toJSONString(),UnsettledSoldTransactionRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetUnsettleSoldTransaction(dataUnsettledSoldTransactionRequest)));
-                //     break;
+                case "17":
+                    printLn((client.GetOrderBook(getRequest(jsonObject, "OrderBookRequest", OrderBookRequest.class))));
+                    break;
+                case "18":
+                    printLn((client.GetAuditOrderBook(
+                            getRequest(jsonObject, "AuditOrderBookRequest", AuditOrderBookRequest.class))));
+                    break;
+                case "19":
+                    printLn((client.GetCashInAdvanceAmount(
+                            getRequest(jsonObject, "CIAAmountRequest", CIAAmountRequest.class))));
+                    break;
 
-                // case "19":
-                //     JSONObject cashTransferHistoryRequest = (JSONObject)jsonObject.get("CashTransferHistoryRequest");
-                //     CashTransferHistoryRequest dataCashTransferHistoryRequest = g.fromJson(cashTransferHistoryRequest.toJSONString(),CashTransferHistoryRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCashTransferHistory(dataCashTransferHistoryRequest)));
-                //     break;
+                case "20":
+                    printLn((client.GetUnsettleSoldTransaction(getRequest(jsonObject, "UnsettledSoldTransactionRequest",
+                            UnsettledSoldTransactionRequest.class))));
+                    break;
 
-                // case "20":
-                //     JSONObject CIAHistoryRequest = (JSONObject)jsonObject.get("CIAHistoryRequest");
-                //     CIAHistoryRequest dataCIAHistoryRequest = g.fromJson(CIAHistoryRequest.toJSONString(),CIAHistoryRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetCIAHistory(dataCIAHistoryRequest)));
-                //     break;
+                case "21":
+                    printLn((client.GetCashTransferHistory(
+                            getRequest(jsonObject, "CashTransferHistoryRequest", CashTransferHistoryRequest.class))));
+                    break;
 
-                // case "21":
-                //     JSONObject estimateCashInAdvanceFeeRequest = (JSONObject)jsonObject.get("EstimateCashInAdvanceFeeRequest");
-                //     EstimateCashInAdvanceFeeRequest dataEstimateCashInAdvanceFeeRequest = g.fromJson(estimateCashInAdvanceFeeRequest.toJSONString(),EstimateCashInAdvanceFeeRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetEstimateCashInAdvanceFee(dataEstimateCashInAdvanceFeeRequest)));
-                //     break;
+                case "22":
+                    printLn((client
+                            .GetCIAHistory(getRequest(jsonObject, "CIAHistoryRequest", CIAHistoryRequest.class))));
+                    break;
 
-                // case "22":
-                //     JSONObject cashTransferVSDRequest = (JSONObject)jsonObject.get("CashTransferVSDRequest");
-                //     CashTransferVSDRequest dataCashTransferVSDRequest = g.fromJson(cashTransferVSDRequest.toJSONString(),CashTransferVSDRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferVSD(dataCashTransferVSDRequest)));
-                //     break;
+                case "23":
+                    printLn((client.GetEstimateCashInAdvanceFee(getRequest(jsonObject,
+                            "EstimateCashInAdvanceFeeRequest", EstimateCashInAdvanceFeeRequest.class))));
+                    break;
 
-                // case "23":
-                //     JSONObject cashTransferRequest = (JSONObject)jsonObject.get("CashTransferRequest");
-                //     CashTransferRequest dataCashTransferRequest = g.fromJson(cashTransferRequest.toJSONString(),CashTransferRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CashTransferInternal(dataCashTransferRequest)));
-                //     break;
+                case "24":
+                    printLn((client.CashTransferVSD(
+                            getRequest(jsonObject, "CashTransferVSDRequest", CashTransferVSDRequest.class))));
+                    break;
 
-                // case "24":
-                //     JSONObject createCashInAdvanceRequest = (JSONObject)jsonObject.get("CreateCashInAdvanceRequest");
-                //     CreateCashInAdvanceRequest dataCreateCashInAdvanceRequest = g.fromJson(createCashInAdvanceRequest.toJSONString(),CreateCashInAdvanceRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.CreateCashInAdvance(dataCreateCashInAdvanceRequest)));
-                //     break;
-                
-                // case "25":
-                //     JSONObject transferableStockRequest = (JSONObject)jsonObject.get("TransferableStockRequest");
-                //     TransferableStockRequest dataTransferableStockRequest = g.fromJson(transferableStockRequest.toJSONString(),TransferableStockRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferable(dataTransferableStockRequest)));
-                //     break;
+                case "25":
+                    printLn((client.CashTransferInternal(
+                            getRequest(jsonObject, "CashTransferRequest", CashTransferRequest.class))));
+                    break;
 
-                // case "26":
-                //     JSONObject stockTransferHistoryRequest = (JSONObject)jsonObject.get("StockTransferHistoryRequest");
-                //     StockTransferHistoryRequest dataStockTransferHistoryRequest = g.fromJson(stockTransferHistoryRequest.toJSONString(),StockTransferHistoryRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetStockTransferHistories(dataStockTransferHistoryRequest)));
-                //     break;
+                case "26":
+                    printLn((client.CreateCashInAdvance(
+                            getRequest(jsonObject, "CreateCashInAdvanceRequest", CreateCashInAdvanceRequest.class))));
+                    break;
 
-                // case "27":
-                //     JSONObject stockTransferRequest = (JSONObject)jsonObject.get("StockTransferRequest");
-                //     StockTransferRequest dataStockTransferRequest = g.fromJson(stockTransferRequest.toJSONString(),StockTransferRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.StockTransfer(dataStockTransferRequest)));
-                //     break;
+                case "27":
+                    printLn((client.GetStockTransferable(
+                            getRequest(jsonObject, "TransferableStockRequest", TransferableStockRequest.class))));
+                    break;
 
-                // case "28":
-                //     JSONObject dividendRequest = (JSONObject)jsonObject.get("DividendRequest");
-                //     DividendRequest dataDividendRequest = g.fromJson(dividendRequest.toJSONString(),DividendRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsDividend(dataDividendRequest)));
-                //     break;
+                case "28":
+                    printLn((client.GetStockTransferHistories(
+                            getRequest(jsonObject, "StockTransferHistoryRequest", StockTransferHistoryRequest.class))));
+                    break;
 
-                // case "29":
-                //     JSONObject exercisableQuantityRequest = (JSONObject)jsonObject.get("ExercisableQuantityRequest");
-                //     ExercisableQuantityRequest dataExercisableQuantityRequest = g.fromJson(exercisableQuantityRequest.toJSONString(),ExercisableQuantityRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsExercisableQuantity(dataExercisableQuantityRequest)));
-                //     break;
+                case "29":
+                    printLn((client.StockTransfer(
+                            getRequest(jsonObject, "StockTransferRequest", StockTransferRequest.class))));
+                    break;
 
-                // case "30":
-                //     JSONObject onlineRightSubscriptionHistoryRequest = (JSONObject)jsonObject.get("OnlineRightSubscriptionHistoryRequest");
-                //     OnlineRightSubscriptionHistoryRequest dataOnlineRightSubscriptionHistoryRequest = g.fromJson(onlineRightSubscriptionHistoryRequest.toJSONString(),OnlineRightSubscriptionHistoryRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOrsHistory(dataOnlineRightSubscriptionHistoryRequest)));
-                //     break;
+                case "30":
+                    printLn((client.GetOrsDividend(getRequest(jsonObject, "DividendRequest", DividendRequest.class))));
+                    break;
 
-                // case "31":
-                //     JSONObject createOnlineRightSubscriptionRequest = (JSONObject)jsonObject.get("CreateOnlineRightSubscriptionRequest");
-                //     CreateOnlineRightSubscriptionRequest dataCreateOnlineRightSubscriptionRequest = g.fromJson(createOnlineRightSubscriptionRequest.toJSONString(),CreateOnlineRightSubscriptionRequest.class);
-                //     System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.OrsCreate(dataCreateOnlineRightSubscriptionRequest)));
-                //     break;
+                case "31":
+                    printLn((client.GetOrsExercisableQuantity(
+                            getRequest(jsonObject, "ExercisableQuantityRequest", ExercisableQuantityRequest.class))));
+                    break;
 
                 case "32":
-                    JSONObject getOTPRequest = (JSONObject)jsonObject.get("GetOTPRequest");
-                    GetOTPRequest datagetOTPRequest = g.fromJson(getOTPRequest.toJSONString(),GetOTPRequest.class);
-                    System.out.println("Response: " + new ObjectMapper().writeValueAsString(client.GetOTP(datagetOTPRequest)));
-
-                    System.out.print("Code:");
-                    Scanner inputReaderOTP32 = new Scanner(System.in);
-                    String lineOTP32 = inputReaderOTP32.nextLine();
-                    //push otp to accesstoken
-                    AccessTokenRequest dataAccessTokenReq = new AccessTokenRequest();
-                    dataAccessTokenReq.consumerID = consumerId;
-                    dataAccessTokenReq.consumerSecret = consumerSecret;
-                    dataAccessTokenReq.isSave = (boolean)jsonObject.get("isSave");
-                    dataAccessTokenReq.twoFactorType = (int)twoFactorType;
-                    dataAccessTokenReq.code = lineOTP32;
-                    client.init(dataAccessTokenReq);
-                    //System.out.println("ResponseToken: " + new ObjectMapper().writeValueAsString(client.AccessToken(dataAccessTokenReq)));
+                    printLn((client.GetOrsHistory(getRequest(jsonObject, "OnlineRightSubscriptionHistoryRequest",
+                            OnlineRightSubscriptionHistoryRequest.class))));
                     break;
 
+                case "33":
+                    printLn((client.OrsCreate(getRequest(jsonObject, "CreateOnlineRightSubscriptionRequest",
+                            CreateOnlineRightSubscriptionRequest.class))));
+                    break;
+
+                case "34":
+
+                    printLn(client.GetRatelimit());
+                    break;
 
                 case "35":
                     return;
@@ -368,24 +310,24 @@ public class Main {
         }
     }
 
+    public static <T> T getRequest(JSONObject jsonObject, String section, java.lang.Class<T> classOfT) {
+        JSONObject newOrderRequest = (JSONObject) jsonObject.get(section);
+        return (new Gson()).fromJson(newOrderRequest.toJSONString(), classOfT);
+    }
+
     public static void FCTradingStreaming() throws Exception {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new FileReader(Paths.get("").toAbsolutePath().toString() + "/fctrading.json"));
-        JSONObject jsonObject = (JSONObject)obj;
-        
-        String consumerId = (String)jsonObject.get("consumerId");
-        String consumerSecret = (String)jsonObject.get("consumerSecret");
-        long twoFactorType = (long)jsonObject.get("twoFactorType");
+        JSONObject jsonObject = (JSONObject) obj;
 
-        FCTradingClient client = new FCTradingClient(consumerId
-                , consumerSecret
-                , (String)jsonObject.get("privateKey")
-                , (String)jsonObject.get("code")
-                , (String)jsonObject.get("url")
-                , false
-                , (int)twoFactorType );
+        String consumerId = (String) jsonObject.get("consumerId");
+        String consumerSecret = (String) jsonObject.get("consumerSecret");
+        long twoFactorType = (long) jsonObject.get("twoFactorType");
+
+        FCTradingClient client = new FCTradingClient(consumerId, consumerSecret, (String) jsonObject.get("privateKey"),
+                (String) jsonObject.get("url"));
         client.init();
-        FCTradingStreaming streaming = new FCTradingStreaming(client, (String)jsonObject.get("streaming_url"));
+        FCTradingStreaming streaming = new FCTradingStreaming(client, (String) jsonObject.get("streaming_url"));
         streaming.onReceived(new MessageReceivedHandler() {
             @Override
             public void onMessageReceived(JsonElement json) {
@@ -402,9 +344,4 @@ public class Main {
         }
     }
 
-
 }
-
-    
-
-    

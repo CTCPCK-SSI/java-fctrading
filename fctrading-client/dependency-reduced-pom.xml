@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>fastconnect</artifactId>
+    <groupId>com.ssi</groupId>
+    <version>1.0.0</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ssi</groupId>
+  <groupId>com.ssi.fastconnect</groupId>
   <artifactId>fctrading</artifactId>
   <name>com.ssi.fastconnect:fctrading-client</name>
-  <version>2.0.0</version>
+  <version>1.0.0</version>
   <description>FastConnect TradingAPI java client</description>
   <developers>
     <developer>
@@ -50,10 +55,17 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/SSI-Securities-Corporation/java-fctrading</url>
+    </repository>
+  </distributionManagement>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <netbeans.hint.license>lgpl3</netbeans.hint.license>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <netbeans.hint.license>lgpl3</netbeans.hint.license>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>

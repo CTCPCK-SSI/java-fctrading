@@ -36,6 +36,7 @@ public class API {
     final static String GET_ORS_HISTORIES = "/api/v2/ors/histories";
     final static String ORS_CREATE = "/api/v2/ors/create";
     final static String GET_OTP = "/api/v2/Trading/GetOTP";
+    final static String GET_RATELIMIT = "/api/v2/Trading/rateLimit";
 
     final static String HUB_NAME = "BroadcastHubV2";
     final static String HUB_EVENT="Broadcast";

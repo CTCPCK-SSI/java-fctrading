@@ -1,6 +1,8 @@
 
 package com.ssi.fctrading;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.MediaType;
@@ -13,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 
 /**
  * The main class.
@@ -20,99 +23,80 @@ import java.security.spec.InvalidKeySpecException;
  * @author ducdv@ssi.com.vn
  */
 public class FCTradingClient {
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     // PRIVATE
     private final String _consumerId;
     private final String _consumerSecret;
     private final PrivateKey _privateKey;
-    private final String _code;
     private final String _url;
-    private final boolean _isSave;
-    private final int _twoFactorType;
     private final OkHttpClient _client = new OkHttpClient();
     private AccessTokenResponse _accessToken = null;
+    private DecodedJWT _decodedJwt = null;
     // PUBLIC
-
+    private boolean _isVerify2FA = false;
     /**
      * Main class.
      */
-    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url, int twoFactorType) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String url)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         _consumerId = consumerId;
         _consumerSecret = consumerSecret;
         _privateKey = Helper.importPrivateKey(privateKey);
-        _code = code;
-        _isSave = true;
-        _url = url;
-        _twoFactorType = twoFactorType;
-    }
-
-    public FCTradingClient(String consumerId, String consumerSecret, String privateKey, String code, String url, boolean isSave, int twoFactorType) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        _consumerId = consumerId;
-        _consumerSecret = consumerSecret;
-        _privateKey = Helper.importPrivateKey(privateKey);
-        _code = code;
-        _isSave = isSave;
-        _twoFactorType = twoFactorType;
-        if(url.endsWith("/"))
-            _url = url.substring(0,url.length() -1) ;
+        if (url.endsWith("/"))
+            _url = url.substring(0, url.length() - 1);
         else
             _url = url;
     }
-
-    public void init() throws Exception {
+    boolean isJWTExpired() {
+        if(_decodedJwt == null)
+            return true;
+        Date expiresAt = _decodedJwt.getExpiresAt();
+        return expiresAt.before((new Date()));
+    }
+    public Response<AccessTokenResponse> GetAccessToken(String code, int twoFactorType, boolean isSave) throws Exception {
         AccessTokenRequest req = new AccessTokenRequest();
         req.consumerID = _consumerId;
         req.consumerSecret = _consumerSecret;
-        req.twoFactorType = _twoFactorType;
-        req.code = _code;
-        req.isSave = _isSave;
+        req.twoFactorType = twoFactorType;
+        req.code = code;
+        req.isSave = isSave;
         ObjectMapper objectMapper = new ObjectMapper();
         String json = new ObjectMapper().writeValueAsString(req);
         RequestBody body = RequestBody.create(json, JSON);
-        
+
         Request request = new Request.Builder()
                 .url(_url + API.ACCESS_TOKEN)
                 .post(body)
                 .build();
         try (okhttp3.Response response = _client.newCall(request).execute()) {
             String rString = response.body().string();
-            Response<AccessTokenResponse> access = objectMapper.readValue(rString, new TypeReference<Response<AccessTokenResponse>>() {
-            });
-            if (access.status == 200)
+            Response<AccessTokenResponse> access = objectMapper.readValue(rString,
+                    new TypeReference<Response<AccessTokenResponse>>() {
+                    });
+            if (access.status == 200) {
                 _accessToken = access.data;
-            else
-                System.out.println(access.message);
-            System.out.println("AccessToken = " + _accessToken.accessToken);
+                _decodedJwt = JWT.decode(_accessToken.accessToken);
+                _isVerify2FA = isSave;
+            } 
+            return access;
         } catch (Exception e) {
             throw e;
         }
     }
-
-    public void init(AccessTokenRequest req) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = new ObjectMapper().writeValueAsString(req);
-        RequestBody body = RequestBody.create(json, JSON);
-        
-        Request request = new Request.Builder()
-                .url(_url + API.ACCESS_TOKEN)
-                .post(body)
-                .build();
-        try (okhttp3.Response response = _client.newCall(request).execute()) {
-            String rString = response.body().string();
-            Response<AccessTokenResponse> access = objectMapper.readValue(rString, new TypeReference<Response<AccessTokenResponse>>() {
-            });
-            if (access.status == 200)
-                _accessToken = access.data;
-            else
-                System.out.println(access.message);
-            System.out.println("AccessToken = " + _accessToken.accessToken);
-        } catch (Exception e) {
-            throw e;
-        }
+    public String GetAccessToken() throws Exception {
+        if(isJWTExpired())
+            GetAccessToken("", 0, false);
+        return _accessToken.accessToken;
+    }
+    public boolean IsVerify2FA(){
+        return _isVerify2FA;
+    }
+    public void init() throws Exception {
+        GetAccessToken();
     }
 
-    public <TRequest, TResponse> Response<TResponse> post(TRequest reqObj, String urlPath, Class<TResponse> classOfResponse) throws Exception {
+    public <TRequest, TResponse> Response<TResponse> post(TRequest reqObj, String urlPath,
+            Class<TResponse> classOfResponse) throws Exception {
         assert _accessToken != null;
         ObjectMapper objectMapper = new ObjectMapper();
         String payLoad = objectMapper.writeValueAsString(reqObj);
@@ -121,7 +105,7 @@ public class FCTradingClient {
         RequestBody body = RequestBody.create(payLoad, JSON);
         Request request = new Request.Builder()
                 .url(_url + urlPath)
-                .addHeader("Authorization", "Bearer " + _accessToken.accessToken)
+                .addHeader("Authorization", "Bearer " + GetAccessToken())
                 .addHeader("X-Signature", signature)
                 .post(body)
                 .build();
@@ -133,19 +117,17 @@ public class FCTradingClient {
             throw e;
         }
     }
-    public String GetAccessToken() throws Exception {
-        if(_accessToken == null)
-            this.init();
-        assert _accessToken != null;
-        return  _accessToken.accessToken;
-    }
-    public <TRequest, TResponse> Response<TResponse> get(TRequest reqObj, String urlPath, Class<TResponse> classOfResponse) throws Exception {
+
+    public <TRequest, TResponse> Response<TResponse> get(TRequest reqObj, String urlPath,
+            Class<TResponse> classOfResponse) throws Exception {
         assert _accessToken != null;
         ObjectMapper objectMapper = new ObjectMapper();
-        String param = objectMapper.convertValue(reqObj, UriFormat.class).toString();
+        String param = "";
+        if(reqObj != null)
+            param = "?" + objectMapper.convertValue(reqObj, UriFormat.class).toString();
         Request request = new Request.Builder()
-                .url(_url + urlPath + "?" + param)
-                .addHeader("Authorization", "Bearer " + _accessToken.accessToken)
+                .url(_url + urlPath + param)
+                .addHeader("Authorization", "Bearer " + GetAccessToken())
                 .get()
                 .build();
         try (okhttp3.Response response = _client.newCall(request).execute()) {
@@ -158,9 +140,11 @@ public class FCTradingClient {
     public Response<NewOrderResponse> NewOrder(NewOrderRequest req) throws Exception {
         return post(req, API.NEW_ORDER, NewOrderResponse.class);
     }
+
     public Response<ModifyOrderResponse> ModifyOrder(ModifyOrderRequest req) throws Exception {
         return post(req, API.MODIFY_ORDER, ModifyOrderResponse.class);
     }
+
     public Response<CancelOrderResponse> CancelOrder(CancelOrderRequest req) throws Exception {
         return post(req, API.CANCEL_ORDER, CancelOrderResponse.class);
     }
@@ -168,9 +152,11 @@ public class FCTradingClient {
     public Response<NewOrderResponse> DerNewOrder(NewOrderRequest req) throws Exception {
         return post(req, API.NEW_ORDER, NewOrderResponse.class);
     }
+
     public Response<ModifyOrderResponse> DerModifyOrder(ModifyOrderRequest req) throws Exception {
         return post(req, API.MODIFY_ORDER, ModifyOrderResponse.class);
     }
+
     public Response<CancelOrderResponse> DerCancelOrder(CancelOrderRequest req) throws Exception {
         return post(req, API.CANCEL_ORDER, CancelOrderResponse.class);
     }
@@ -220,11 +206,13 @@ public class FCTradingClient {
         return get(req, API.GET_CIA_AMOUNT, CIAAmountResponse.class);
     }
 
-    public Response<UnsettledSoldTransactionResponse> GetUnsettleSoldTransaction(UnsettledSoldTransactionRequest req) throws Exception {
+    public Response<UnsettledSoldTransactionResponse> GetUnsettleSoldTransaction(UnsettledSoldTransactionRequest req)
+            throws Exception {
         return get(req, API.GET_UNSETTLE_SOLD_TRANSACTION, UnsettledSoldTransactionResponse.class);
     }
 
-    public Response<CashTransferHistoryResponse> GetCashTransferHistory(CashTransferHistoryRequest req) throws Exception {
+    public Response<CashTransferHistoryResponse> GetCashTransferHistory(CashTransferHistoryRequest req)
+            throws Exception {
         return get(req, API.GET_TRANSFER_HISTORIES, CashTransferHistoryResponse.class);
     }
 
@@ -232,7 +220,8 @@ public class FCTradingClient {
         return get(req, API.GET_CIA_HISTORIES, CIAHistoryResponse.class);
     }
 
-    public Response<EstimateCashInAdvanceFeeResponse> GetEstimateCashInAdvanceFee(EstimateCashInAdvanceFeeRequest req) throws Exception {
+    public Response<EstimateCashInAdvanceFeeResponse> GetEstimateCashInAdvanceFee(EstimateCashInAdvanceFeeRequest req)
+            throws Exception {
         return get(req, API.GET_EST_CIA_FEE, EstimateCashInAdvanceFeeResponse.class);
     }
 
@@ -252,7 +241,8 @@ public class FCTradingClient {
         return get(req, API.GET_STOCK_TRANSFERABLE, TransferableStockResponse.class);
     }
 
-    public Response<StockTransferHistoryResponse> GetStockTransferHistories(StockTransferHistoryRequest req) throws Exception {
+    public Response<StockTransferHistoryResponse> GetStockTransferHistories(StockTransferHistoryRequest req)
+            throws Exception {
         return get(req, API.GET_STOCK_TRANSFER_HISTORIES, StockTransferHistoryResponse.class);
     }
 
@@ -265,68 +255,43 @@ public class FCTradingClient {
         return get(req, API.GET_ORS_DIVIDEND, DividendResponse.class);
     }
 
-    public Response<ExercisableQuantityResponse> GetOrsExercisableQuantity(ExercisableQuantityRequest req) throws Exception {
+    public Response<ExercisableQuantityResponse> GetOrsExercisableQuantity(ExercisableQuantityRequest req)
+            throws Exception {
         return get(req, API.GET_ORS_EXERCISABLE_QUANTITY, ExercisableQuantityResponse.class);
     }
 
-    public Response<OnlineRightSubscriptionHistoryResponse> GetOrsHistory(OnlineRightSubscriptionHistoryRequest req) throws Exception {
+    public Response<OnlineRightSubscriptionHistoryResponse> GetOrsHistory(OnlineRightSubscriptionHistoryRequest req)
+            throws Exception {
         return get(req, API.GET_ORS_HISTORIES, OnlineRightSubscriptionHistoryResponse.class);
     }
 
-    public Response<CreateOnlineRightSubscriptionResponse> OrsCreate(CreateOnlineRightSubscriptionRequest req) throws Exception {
+    public Response<CreateOnlineRightSubscriptionResponse> OrsCreate(CreateOnlineRightSubscriptionRequest req)
+            throws Exception {
         return post(req, API.ORS_CREATE, CreateOnlineRightSubscriptionResponse.class);
+    }
+    public Response<RatelimitResponse> GetRatelimit()
+            throws Exception {
+        return get(null, API.GET_RATELIMIT, RatelimitResponse.class);
     }
 
     public Response<GetOTPResponse> GetOTP(GetOTPRequest req) throws Exception {
-        return post(req, API.GET_OTP, GetOTPResponse.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String payLoad = objectMapper.writeValueAsString(req);
+
+        RequestBody body = RequestBody.create(payLoad, JSON);
+        Request request = new Request.Builder()
+                .url(_url + API.GET_OTP)
+                .post(body)
+                .build();
+        try (okhttp3.Response response = _client.newCall(request).execute()) {
+            String rString = response.body().string();
+            return objectMapper.readValue(rString, new TypeReference<Response<GetOTPResponse>>() {
+            });
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-    public static void main(String[] args) throws Exception {
-        FCTradingClient client = new FCTradingClient("", ""
-                , ""
-                , ""
-                , ""
-                , true
-                , 0
-        );
-        client.init();
-
-        NewOrderRequest newOrderRequest = new NewOrderRequest();
-        newOrderRequest.account = "0000038";
-        newOrderRequest.buySell = "B";
-        newOrderRequest.channelID = "TA";
-        newOrderRequest.instrumentID = "VN30F2208";
-        newOrderRequest.market = "VNFE";
-        newOrderRequest.modifiable = true;
-        newOrderRequest.orderType = "LO";
-        newOrderRequest.price = 1133.6;
-        newOrderRequest.stopOrder = false;
-        newOrderRequest.quantity = 1;
-        newOrderRequest.requestID = "02";
-        System.out.println("NEW ORDER =" + new ObjectMapper().writeValueAsString(client.NewOrder(newOrderRequest)));
-        AccountBalanceRequest req = new AccountBalanceRequest();
-        req.account = "0000038";
-        System.out.println("DER BAL=" + new ObjectMapper().writeValueAsString(client.GetDerivativeBalance(req)));
-        req.account = "0000038";
-        System.out.println("CASH BAL=" + new ObjectMapper().writeValueAsString(client.GetCashBalance(req)));
-        PPMMRAccountRequest ppmmr = new PPMMRAccountRequest();
-        ppmmr.account = "0000031";
-        System.out.println("PPMMR =" + new ObjectMapper().writeValueAsString(client.GetPPMMRAccount(ppmmr)));
-        AccountPositionRequest positionRequest = new AccountPositionRequest();
-        positionRequest.account = "0000031";
-        System.out.println("GetStockPosition =" + new ObjectMapper().writeValueAsString(client.GetStockPosition(positionRequest)));
-        positionRequest.account = "0000038";
-        System.out.println("GetDerivativePosition =" + new ObjectMapper().writeValueAsString(client.GetDerivativePosition(positionRequest)));
-        MaxQtyRequest maxQtyRequest = new MaxQtyRequest();
-        maxQtyRequest.account = "0000031";
-        maxQtyRequest.instrumentID = "SSI";
-        maxQtyRequest.price = 20000;
-        System.out.println("GetMaxBuyQty =" + new ObjectMapper().writeValueAsString(client.GetMaxBuyQty(maxQtyRequest)));
-        System.out.println("GetMaxSellQty =" + new ObjectMapper().writeValueAsString(client.GetMaxSellQty(maxQtyRequest)));
-        OrderHistoryRequest orderHistoryRequest = new OrderHistoryRequest();
-        orderHistoryRequest.account = "0000031";
-        orderHistoryRequest.startDate = "20/07/2022";
-        orderHistoryRequest.endDate = "27/07/2022";
-        System.out.println("GetOrderHistory =" + new ObjectMapper().writeValueAsString(client.GetOrderHistory(orderHistoryRequest)));
-    }
+    
+        
 }

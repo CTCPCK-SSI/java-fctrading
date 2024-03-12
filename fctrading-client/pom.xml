@@ -2,16 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ssi</groupId>
-    <artifactId>fastconnect</artifactId>
+    <parent>
+        <groupId>com.ssi</groupId>
+        <artifactId>fastconnect</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <groupId>com.ssi.fastconnect</groupId>
+    <artifactId>fctrading</artifactId>
     <version>1.0.0</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>com.ssi.fastconnect:fctrading-client</name>
     <description>FastConnect TradingAPI java client</description>
-    <modules>
-        <module>fctrading-client</module>
-        <module>samples</module>
-    </modules>
     <licenses>
         <license>
             <name>The GNU Lesser General Public Licence, Version 3.0</name>
@@ -71,4 +72,41 @@
             <url>https://maven.pkg.github.com/SSI-Securities-Corporation/java-fctrading</url>
         </repository>
     </distributionManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.fDizzzy</groupId>
+            <artifactId>signalr-client</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+    </dependencies>
 </project>

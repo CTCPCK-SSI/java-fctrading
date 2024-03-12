@@ -1,11 +1,9 @@
 {
-  "url": "",
-  "streaming_url": "",
+  "url": "https://fc-tradeapi.ssi.com.vn",
+  "streaming_url": "https://fc-tradehub.ssi.com.vn",
   "consumerId": "",
   "consumerSecret": "",
   "privateKey": "",
-  "code": "",
-  "isSave": true,
   "twoFactorType": 1,
   "NewOrderRequest": {
     "instrumentID": "SSI",
@@ -24,7 +22,7 @@
     "profitStep": 0,
     "code": "268627",
     "modifiable": true,
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "ModifyOrderRequest": {
     "orderID": "12906599",
@@ -36,7 +34,7 @@
     "buySell": "B",
     "orderType": "LO",
     "code": "12345678",
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "CancelOrderRequest": {
     "orderID": "12906599",
@@ -45,7 +43,7 @@
     "instrumentID": "SSI",
     "buySell": "B",
     "code": "12345678",
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "DerNewOrderRequest": {
     "instrumentID": "VN30F2310",
@@ -64,7 +62,7 @@
     "profitStep": 0,
     "code": "12345678",
     "modifiable": true,
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "DerModifyOrderRequest": {
     "orderID": "12906599",
@@ -76,7 +74,7 @@
     "buySell": "B",
     "orderType": "LO",
     "code": "12345678",
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "DerCancelOrderRequest": {
     "orderID": "12906599",
@@ -85,7 +83,7 @@
     "instrumentID": "VN30F2310",
     "buySell": "B",
     "code": "12345678",
-	"userAgent":"fctrading"
+    "userAgent": "fctrading"
   },
   "CashAccountBalanceRequest": {
     "account": "0901351"
@@ -129,7 +127,7 @@
   },
   "UnsettledSoldTransactionRequest": {
     "account": "0901351",
-	"settleDate":"29/08/2022"
+    "settleDate": "29/08/2022"
   },
   "CashTransferHistoryRequest": {
     "account": "0901351",
@@ -147,62 +145,58 @@
     "receiveAmount": 0
   },
   "CashTransferVSDRequest": {
-	"code": "12345678",
+    "code": "12345678",
     "account": "0901351",
     "amount": 1000,
     "type": "",
-	"remark": ""
+    "remark": ""
   },
   "CashTransferRequest": {
-	"code": "12345678",
+    "code": "12345678",
     "account": "0901351",
     "beneficiaryAccount": "0901356",
     "amount": 1000,
-	"remark": ""
+    "remark": ""
   },
   "CreateCashInAdvanceRequest": {
-	"code": "12345678",
+    "code": "12345678",
     "account": "0901351",
     "CIAAmount": 1000,
-	"receiveAmount": 1000
+    "receiveAmount": 1000
   },
   "TransferableStockRequest": {
     "account": "0901351"
   },
   "StockTransferHistoryRequest": {
-	"account": "0901351",
+    "account": "0901351",
     "startDate": "29/08/2022",
     "endDate": "29/08/2022"
   },
   "StockTransferRequest": {
-	"code": "12345678",
-	"account": "0901351",
+    "code": "12345678",
+    "account": "0901351",
     "beneficiaryAccount": "0901356",
     "exchangeID": "VN",
-	"instrumentID": "SSI",
+    "instrumentID": "SSI",
     "quantity": 100
   },
   "DividendRequest": {
-	"account": "0901351"
+    "account": "0901351"
   },
   "ExercisableQuantityRequest": {
-	"account": "0901351"
+    "account": "0901351"
   },
   "OnlineRightSubscriptionHistoryRequest": {
-	"account": "0901351",
+    "account": "0901351",
     "startDate": "29/08/2022",
     "endDate": "29/08/2022"
   },
   "CreateOnlineRightSubscriptionRequest": {
-	"code": "12345678",
-	"account": "0901351",
+    "code": "12345678",
+    "account": "0901351",
     "instrumentID": "SSI",
     "entitlementID": "",
-	"quantity": 100,
+    "quantity": 100,
     "amount": 100
-  },
-  "GetOTPRequest": {
-	"consumerID": "dd11c30e98494385a180f6ebae321272",
-    "consumerSecret": "7526cf28e8024d249615ec57b940bec0"
   }
 }

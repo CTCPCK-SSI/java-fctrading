@@ -85,29 +85,5 @@ public class FCTradingStreaming {
     public  void start() throws Exception {
        _hubConnection.start(new WebsocketTransport(new NullLogger()));
     }
-    public static void main(String[] args) throws Exception {
-
-                FCTradingClient client = new FCTradingClient("", ""
-                , ""
-                , ""
-                , ""
-                , true
-                , 0
-        );
-        FCTradingStreaming streaming = new FCTradingStreaming(client, "");
-        streaming.onReceived(new MessageReceivedHandler() {
-            @Override
-            public void onMessageReceived(JsonElement json) {
-                System.out.println("onMessageReceived " + json.getAsString());
-            }
-        });
-        streaming.start();
-        // Read lines and send them as messages.
-        Scanner inputReader = new Scanner(System.in);
-        String line = inputReader.nextLine();
-        while (!"exit".equals(line)) {
-            line = inputReader.next();
-        }
-    }
-
+    
 }
