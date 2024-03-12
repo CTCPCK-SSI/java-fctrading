@@ -32,7 +32,7 @@ jobs:
         run: mvn versions:set -DnewVersion=${{ steps.semantic.outputs.new_release_version }} -DprocessAllModules -DgenerateBackupPoms=false
 
       - name: Publish java package
-        run: mvn --batch-mode deploy -Dmaven.test.skip
+        run: mvn --batch-mode deploy -Dmaven.test.skip  -pl fctrading-client
 
       - name: Semantic Release
         if: steps.semantic.outputs.new_release_published == 'true'
