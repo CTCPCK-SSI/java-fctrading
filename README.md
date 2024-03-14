@@ -11,7 +11,7 @@ Add this to pom.xml:
 <dependency>
   <groupId>com.ssi.fastconnect</groupId>
   <artifactId>fctrading</artifactId>
-  <version>2.1.0</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 And using:
@@ -34,5 +34,5 @@ Add your `consumerId` and `consumerSecret` (get from [iBoard](https://iboard.ssi
 
 Place `fctrading.json` to folder to execute and run:
 ```shell
-java -jar fctrading-client-sample-2.1.0.jar
+java -jar fctrading-client-sample-2.1.1.jar
 ```

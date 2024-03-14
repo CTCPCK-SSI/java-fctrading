@@ -1,5 +1,12 @@
 # Java FC Trading
 
+## [2.1.1](https://github.com/SSI-Securities-Corporation/java-fctrading/compare/v2.1.0...v2.1.1) (2024-03-14)
+
+
+### Bug Fixes
+
+* update version readme ([58cce65](https://github.com/SSI-Securities-Corporation/java-fctrading/commit/58cce656c745ab5e021a01d8c228303d249f32ba))
+
 # [2.1.0](https://github.com/SSI-Securities-Corporation/java-fctrading/compare/v2.0.0...v2.1.0) (2024-03-14)
 
 
