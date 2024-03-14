@@ -29,10 +29,18 @@ jobs:
 
       - name: Update pom.xml
         if: steps.semantic.outputs.new_release_published == 'true'
-        run: mvn versions:set -DnewVersion=${{ steps.semantic.outputs.new_release_version }} -DprocessAllModules -DgenerateBackupPoms=false
+        run: mvn versions:set-property -Dproperty=revision -DnewVersion=${{ steps.semantic.outputs.new_release_version }} -DgenerateBackupPoms=false
+      
+      - name: Update README.md
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: sed -i 's/${{ steps.semantic.outputs.last_release_version }}/'${{ new_release_version }}'/' README.md
+      
+      - name: Publish sample package
+        run: mvn clean package
 
       - name: Publish java package
         run: mvn --batch-mode deploy -Dmaven.test.skip  -pl fctrading-client
+
 
       - name: Semantic Release
         if: steps.semantic.outputs.new_release_published == 'true'

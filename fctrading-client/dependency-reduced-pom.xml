@@ -3,13 +3,13 @@
   <parent>
     <artifactId>fastconnect</artifactId>
     <groupId>com.ssi</groupId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.ssi.fastconnect</groupId>
   <artifactId>fctrading</artifactId>
   <name>com.ssi.fastconnect:fctrading-client</name>
-  <version>1.0.0</version>
+  <version>${revision}</version>
   <description>FastConnect TradingAPI java client</description>
   <developers>
     <developer>

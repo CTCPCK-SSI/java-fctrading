@@ -27,6 +27,10 @@
         "assets": [{
           "name": "fctrading-client.jar",
           "path": "fctrading-client/target/*.jar"
+        },
+        {
+          "name": "fctrading-client-sample.jar",
+          "path": "samples/target/fctrading-client-sample-*.jar"
         }]
       }
     ]

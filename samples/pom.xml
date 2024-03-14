@@ -6,10 +6,10 @@
     <parent>
         <groupId>com.ssi</groupId>
         <artifactId>fastconnect</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
     <groupId>com.ssi.fastconnect.fctrading</groupId>
-    <version>2.0.0</version>
+    <version>${revision}</version>
     <artifactId>samples</artifactId>
      <packaging>jar</packaging>
     <properties>
@@ -53,6 +53,7 @@
                             <mainClass>com.ssi.fctrading.Main</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>fctrading-client-sample-${revision}</finalName>
                 </configuration>
                 <executions>
                     <execution>
@@ -96,7 +97,7 @@
         <dependency>
             <groupId>com.ssi.fastconnect</groupId>
             <artifactId>fctrading</artifactId>
-            <version>1.0.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         
         <dependency>
