@@ -17,7 +17,8 @@
       {
         "assets": [
           "pom.xml",
-          "CHANGELOG.md"
+          "CHANGELOG.md",
+          "README.md"
         ]
       }
     ],
